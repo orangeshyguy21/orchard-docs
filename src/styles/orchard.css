@@ -191,6 +191,17 @@
     inset 0 1px 0 color-mix(in srgb, var(--color-theme-1) 60%, transparent),
     inset 0 -1px 0 color-mix(in srgb, var(--color-theme-5) 40%, transparent);
 }
+/* Outlined secondary CTA — same footprint and corner radius as .cta-primary so
+ * the pair reads as a matched set, but keeps Starlight's outline treatment
+ * instead of the bright ramp. Un-layered to override .sl-link-button's pill. */
+.cta-secondary {
+  margin: 0;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
 @keyframes cta-flow {
   from { background-position: 28% 0%, 16% 50%; }
   to { background-position: 28% 0%, 84% 50%; }

@@ -15,18 +15,11 @@ export default defineConfig({
       title: 'Orchard Docs',
       description:
         'Documentation for Orchard — the all-in-one Cashu mint manager. Guides for setting up and running your own sovereign bank in cyberspace.',
-      // i18n: English serves from the root (content stays in src/content/docs/);
-      // each other locale lives in src/content/docs/<lang>/ and gets a /<lang>/
-      // prefix. Starlight adds the language picker and localizes its own UI
-      // strings; pages without a translation fall back to English automatically.
-      defaultLocale: 'root',
-      locales: {
-        root: { label: 'English', lang: 'en' },
-        es: { label: 'Español', lang: 'es' },
-        de: { label: 'Deutsch', lang: 'de' },
-        ko: { label: '한국어', lang: 'ko' },
-        pl: { label: 'Polski', lang: 'pl' },
-      },
+      // i18n is intentionally OFF while the docs are still being authored:
+      // English is the single source of truth, served from the root. Locales and
+      // translations get re-introduced in one pass once content is frozen — see
+      // AGENTS.md "Localization (deferred)". Don't re-add `locales` without the
+      // translated pages, or non-English routes fall back to English silently.
       logo: {
         src: './src/assets/orchard-logo.svg',
         alt: 'Orchard',
@@ -50,13 +43,36 @@ export default defineConfig({
         { icon: 'x.com', label: 'X', href: 'https://x.com/CashuOrchard' },
       ],
       // Surfaced by Starlight's built-in (Pagefind) search and a11y tooling.
-      // `slug` entries auto-localize across locales; 'index' is the root page.
+      // 'index' is the root Overview page. When locales return, restore the
+      // per-item `translations` labels here (see AGENTS.md "Localization").
       sidebar: [
+        { label: 'Overview', slug: 'index' },
         {
-          label: 'Get Started',
+          label: 'New Mint',
           items: [
-            { label: 'Overview', slug: 'index' },
-            { label: 'Getting Started', slug: 'getting-started' },
+            { label: 'Overview', slug: 'new-mint' },
+            { label: 'Bitcoin Node', slug: 'new-mint/bitcoin-node' },
+            { label: 'Lightning Node', slug: 'new-mint/lightning-node' },
+            { label: 'Cashu Mint', slug: 'new-mint/mint' },
+            { label: 'Orchard', slug: 'new-mint/orchard' },
+          ],
+        },
+        {
+          label: 'Existing Mint',
+          items: [
+            { label: 'Overview', slug: 'existing-mint' },
+            { label: 'Bitcoin Core', slug: 'existing-mint/bitcoin-core' },
+            { label: 'Lightning: LND or CLN', slug: 'existing-mint/lightning' },
+            { label: 'Mint: Nutshell or CDK', slug: 'existing-mint/mint' },
+          ],
+        },
+        {
+          label: 'Using Orchard',
+          items: [
+            { label: 'Overview', slug: 'orchard' },
+            { label: 'The Dashboard', slug: 'orchard/dashboard' },
+            { label: 'Monitoring & Health', slug: 'orchard/monitoring' },
+            { label: 'Configuration', slug: 'orchard/configuration' },
           ],
         },
       ],

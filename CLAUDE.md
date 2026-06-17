@@ -15,6 +15,12 @@ is Claude-specific or worth surfacing for quick recall.
   Cloudflare Pages on push to `master`. Node 22.
 - **Purpose:** Documentation for Orchard (an all-in-one Cashu mint manager).
   Companion to the marketing site at [orchard.space](https://orchard.space).
+- **These are product docs, not developer docs.** Orchard is a free, open-source,
+  self-hosted app; the reader is the operator setting up and running their own
+  mint, not a developer using an API. The setup/install/use guides *are* core to
+  the product — write for the self-hoster, not a contributor. The README is being
+  trimmed to a pointer **to this site**, so the docs (not the README) are
+  canonical; link the repo for code, not as the how-to-run authority. (See AGENTS.md.)
 - **Content lives in** [src/content/docs/](src/content/docs/) as `.md`/`.mdx`;
   the file path is the URL.
 - **Theme & fonts:** [src/styles/orchard.css](src/styles/orchard.css) maps the
@@ -24,8 +30,10 @@ is Claude-specific or worth surfacing for quick recall.
 
 1. **Stay static & lean.** No SSR, no server adapter, no client framework.
    Let Starlight provide the interactivity (search, theme toggle, nav).
-2. **Be accurate.** Don't invent CLI commands, flags, or config you can't verify;
-   link the [repo](https://github.com/cashubtc/orchard) instead.
+2. **Be accurate.** Don't invent CLI commands, flags, or config you can't verify.
+   Say the steps are coming and let them land here; link the
+   [repo](https://github.com/cashubtc/orchard) for the code, not as the source of
+   truth for how to run Orchard.
 3. **Every page has a real `title` + `description`** in frontmatter — they drive
    SEO, OG tags, and search snippets.
 4. **Theme via tokens**, not arbitrary hex. Check WCAG AA on both light and dark.

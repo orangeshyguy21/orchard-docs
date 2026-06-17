@@ -1,0 +1,47 @@
+---
+title: Run a Cashu Mint
+description: Run a Cashu mint — Nutshell or CDK — backed by your own Lightning node. Part of the New Mint walkthrough toward a fully sovereign mint.
+---
+
+import { Aside, CardGrid, LinkCard, Tabs, TabItem } from '@astrojs/starlight/components';
+
+The mint itself — the service that issues and redeems Chaumian ecash against your
+Lightning node. This is the piece Orchard will manage, so once it's running and
+settling through Lightning, you're one step from the dashboard.
+
+## Pick an implementation
+
+<Tabs>
+  <TabItem label="Nutshell">
+    [Nutshell](https://github.com/cashubtc/nutshell) — the reference Cashu mint and
+    wallet in Python. The quickest way to a working mint and a natural fit for
+    Orchard to manage.
+  </TabItem>
+  <TabItem label="CDK">
+    [CDK](https://github.com/cashubtc/cdk) — the Cashu Development Kit in Rust,
+    whose `cdk-mintd` runs a production-minded mint daemon.
+  </TabItem>
+</Tabs>
+
+## What you'll set up
+
+- **The mint**, configured to settle against your Lightning node.
+- **Mint info** — name, description, and contact, shown to wallets that connect.
+- **Persistent storage and backups** for the mint's keys and database.
+
+<Aside type="caution" title="Exact commands are on the way">
+  Until the step-by-step setup lands here, follow your chosen implementation's docs
+  — [Nutshell](https://github.com/cashubtc/nutshell) or
+  [CDK](https://github.com/cashubtc/cdk) — as the source of truth for running a
+  mint.
+</Aside>
+
+## Next
+
+<CardGrid>
+  <LinkCard
+    title="Next: Set Up Orchard"
+    href="/new-mint/orchard/"
+    description="Hand your fresh mint to Orchard and manage it all from one place."
+  />
+</CardGrid>
