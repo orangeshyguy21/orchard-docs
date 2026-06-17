@@ -1,0 +1,48 @@
+---
+title: Set Up Your System
+description: Prepare and harden the machine your whole Orchard stack runs on — the foundation under Bitcoin, Lightning, and your Cashu mint. Part of the New Mint walkthrough.
+---
+
+import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+The foundation. Bitcoin Core, your Lightning node, the mint, and Orchard all run
+on this one machine, so it's the first thing to get right. A mint holds value and
+is expected to stay online around the clock — that makes the host itself part of
+your security model, not just a place to install software.
+
+## What you'll set up
+
+- **A host you control.** A VPS or a home server with room for the whole stack:
+  enough disk for a full Bitcoin node (several hundred gigabytes and growing), plus
+  the CPU, RAM, and a connection to keep it online around the clock.
+- **A current, supported OS.** The stack's tooling targets Linux — install a
+  maintained release and keep it patched.
+- **Hardened remote access.** Key-only SSH (no password login), a non-root user
+  with `sudo`, and the SSH port reachable only to you.
+- **A firewall.** Default-deny inbound, opening only the ports each service needs
+  as you add it in the steps that follow.
+- **Unattended security updates** and an accurate clock (NTP) — Lightning and TLS
+  are both time-sensitive.
+- **A backup plan** for keys and configuration, in place before anything holds value.
+
+<Aside type="tip" title="VPS or home server?">
+  Either works. A VPS is quick to stand up and stays online without effort; a home
+  server keeps everything on hardware you physically control. Pick what you can keep
+  patched, backed up, and running — that matters more than the venue.
+</Aside>
+
+<Aside type="caution" title="Exact commands are on the way">
+  Until the hardening steps land here, follow your distribution's security guide and
+  the [OpenSSH manual](https://www.openssh.com/manual.html) as the source of truth for
+  locking down access. Treat these basics as prerequisites for every step below.
+</Aside>
+
+## Next
+
+<CardGrid>
+  <LinkCard
+    title="Next: Bitcoin Node"
+    href="/new-mint/bitcoin-node/"
+    description="With the box ready and secured, stand up Bitcoin Core — the base layer everything else settles to."
+  />
+</CardGrid>

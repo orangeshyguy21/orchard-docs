@@ -51,6 +51,7 @@ export default defineConfig({
           label: 'New Mint',
           items: [
             { label: 'Guide', slug: 'new-mint' },
+            { label: 'System', slug: 'new-mint/system' },
             { label: 'Bitcoin Node', slug: 'new-mint/bitcoin-node' },
             { label: 'Lightning Node', slug: 'new-mint/lightning-node' },
             { label: 'Cashu Mint', slug: 'new-mint/mint' },

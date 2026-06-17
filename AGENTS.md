@@ -93,6 +93,15 @@ First-class, not an afterthought — Orchard's audience includes agents.
   "source of truth" for how to run Orchard. Never fabricate a plausible recipe.
 - Lead with the reader's goal. Use Starlight's `Steps`, `Aside`, `Card`,
   `LinkCard`, `Tabs`, and `Code` components instead of reinventing them.
+- **Write plainly: literal, not flowery.** Say what a thing does, not what it
+  evokes. Avoid metaphor, idiom, and decorative phrasing; they read as vague and
+  they translate badly. Every page is regenerated into multiple languages once
+  content freezes (see [Localization](#localization-deferred)), and figurative
+  prose is where translations drift or break. Prefer "each layer builds on the
+  one below" to "each settles down to the one below." Plain English is also the
+  most reliable input for the LLM readers in pillar 3.
+  - **No em dashes in body prose.** Recast with a colon, parentheses, or two
+    sentences. They invite run-on, comma-spliced phrasing that translates poorly.
 
 ---
 
