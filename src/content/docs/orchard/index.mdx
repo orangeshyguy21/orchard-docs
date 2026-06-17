@@ -1,0 +1,43 @@
+---
+title: Using Orchard
+description: Operate your Cashu mint with Orchard — the dashboard, monitoring, and optional configuration that turn a running mint into one you can tend at a glance.
+---
+
+import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+Once Orchard is installed and pointed at your mint, this is where you live. Orchard
+is the **groundskeeper** for your mint — it surfaces keys, balances, and health in
+one place so you can tend the mint instead of babysitting a terminal.
+
+<Aside type="note" title="Not set up yet?">
+  These pages assume Orchard is already running against your mint. If you haven't
+  reached that point, build the stack with the [New Mint](/new-mint/) walkthrough
+  or connect what you already run from [Already Have a Mint](/existing-mint/).
+</Aside>
+
+## What you can do
+
+<CardGrid>
+  <LinkCard
+    title="The Dashboard"
+    href="/orchard/dashboard/"
+    description="Operate your mint — keys, balances, and mint info from a single view."
+  />
+  <LinkCard
+    title="Monitoring & Health"
+    href="/orchard/monitoring/"
+    description="Stay informed — activity and health surfaced where you already are."
+  />
+  <LinkCard
+    title="Configuration & Optional Features"
+    href="/orchard/configuration/"
+    description="Turn on what you need, leave the rest — mint metadata and optional features."
+  />
+</CardGrid>
+
+<Aside type="caution" title="Feature-level guides are on the way">
+  Orchard is under active development, and its feature set is still growing. The
+  per-feature walkthroughs land here as features settle. The
+  [Orchard repository](https://github.com/cashubtc/orchard) has the source code in
+  the meantime.
+</Aside>

@@ -1,0 +1,43 @@
+---
+title: Run a Bitcoin Node
+description: Stand up your own Bitcoin Core node — the base layer your Lightning node and Cashu mint settle down to. Part of the New Mint walkthrough.
+---
+
+import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+The base layer. A Bitcoin full node validates the chain independently, so your
+Lightning node trusts your own copy of the ledger rather than someone else's.
+Running your own node is what makes the rest of the stack genuinely sovereign.
+
+## What you'll set up
+
+- **Bitcoin Core (`bitcoind`)** — the reference full node. Install it, let it
+  perform its initial block download, and keep it online.
+- **An RPC connection** your Lightning node can reach, so Lightning can watch the
+  chain and broadcast transactions.
+
+Plan for the initial sync to take time and disk: a full node needs several hundred
+gigabytes and can take a day or more to validate from genesis.
+
+<Aside type="note" title="Pruned vs. full">
+  Lightning backends differ in what they need from Bitcoin Core. Check your chosen
+  Lightning node's requirements before committing to a pruned node — some features
+  expect an unpruned chain or a transaction index.
+</Aside>
+
+<Aside type="caution" title="Exact commands are on the way">
+  Until the step-by-step setup lands here, follow the official
+  [Bitcoin Core documentation](https://bitcoincore.org/en/doc/) and the
+  [bitcoin/bitcoin repository](https://github.com/bitcoin/bitcoin) as the source of
+  truth for installing and configuring `bitcoind`.
+</Aside>
+
+## Next
+
+<CardGrid>
+  <LinkCard
+    title="Next: Lightning Node"
+    href="/new-mint/lightning-node/"
+    description="With the chain in place, stand up LND or Core Lightning on top of it."
+  />
+</CardGrid>

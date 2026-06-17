@@ -1,0 +1,65 @@
+---
+title: New Mint
+description: The sovereign path — stand up Bitcoin, Lightning, and a Cashu mint from scratch, then hand the keys to Orchard. The suggested route to a fully self-hosted mint.
+---
+
+import { Aside, CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
+
+Starting from nothing? This is the suggested path to a **fully sovereign mint** —
+every layer run by you, on hardware you control. A Cashu mint stands on three
+layers, each settling down to the one below it. You'll build them bottom-up, then
+let Orchard tend the result.
+
+<Steps>
+
+1. **[Bitcoin node](/new-mint/bitcoin-node/)** — the base layer. Your own Bitcoin
+   Core node, the source of truth your Lightning node trusts.
+
+2. **[Lightning node](/new-mint/lightning-node/)** — settles ecash in and out.
+   LND or Core Lightning, anchored to the Bitcoin node below it.
+
+3. **[Cashu mint](/new-mint/mint/)** — issues and redeems ecash against that
+   Lightning node.
+
+4. **[Orchard](/new-mint/orchard/)** — hand it the keys and tend the mint from one
+   place.
+
+</Steps>
+
+<Aside type="tip" title="Already running some of this?">
+  If you already operate a Bitcoin node, Lightning node, or mint, you don't need
+  to rebuild it. Jump to [Already Have a Mint](/existing-mint/) and point Orchard
+  at what you've got.
+</Aside>
+
+## The path
+
+<CardGrid>
+  <LinkCard
+    title="1. Bitcoin Node"
+    href="/new-mint/bitcoin-node/"
+    description="Run Bitcoin Core and let it sync — the chain everything else settles to."
+  />
+  <LinkCard
+    title="2. Lightning Node"
+    href="/new-mint/lightning-node/"
+    description="Stand up LND or Core Lightning on top of your Bitcoin node."
+  />
+  <LinkCard
+    title="3. Cashu Mint"
+    href="/new-mint/mint/"
+    description="Run a Cashu mint — Nutshell or CDK — backed by your Lightning node."
+  />
+  <LinkCard
+    title="4. Orchard"
+    href="/new-mint/orchard/"
+    description="Point Orchard at your mint and manage it all from one dashboard."
+  />
+</CardGrid>
+
+<Aside type="caution" title="Step-by-step commands are on the way">
+  Orchard is under active development. These guides frame each layer and link out
+  to each tool's own docs; the exact commands land here as the first release
+  stabilizes. The [Orchard repository](https://github.com/cashubtc/orchard) has the
+  source code in the meantime.
+</Aside>

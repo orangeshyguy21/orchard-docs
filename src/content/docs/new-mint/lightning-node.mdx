@@ -1,0 +1,48 @@
+---
+title: Run a Lightning Node
+description: Stand up an LND or Core Lightning node on top of your Bitcoin node — the layer your Cashu mint settles ecash against. Part of the New Mint walkthrough.
+---
+
+import { Aside, CardGrid, LinkCard, Tabs, TabItem } from '@astrojs/starlight/components';
+
+The settlement layer. Your Cashu mint issues ecash backed by Lightning, so this
+node is what moves real sats in and out when users mint and melt. It anchors to
+the Bitcoin node you set up in the previous step.
+
+## Pick an implementation
+
+<Tabs>
+  <TabItem label="LND">
+    [LND](https://github.com/lightningnetwork/lnd) — Lightning Labs' widely
+    deployed node. Connects to your mint via gRPC/REST with a macaroon and TLS
+    certificate.
+  </TabItem>
+  <TabItem label="Core Lightning">
+    [Core Lightning](https://github.com/ElementsProject/lightning) (CLN) —
+    Blockstream's implementation, extensible through plugins and connected over its
+    RPC socket.
+  </TabItem>
+</Tabs>
+
+## What you'll set up
+
+- **The node**, pointed at your Bitcoin Core node's RPC and notification
+  endpoints.
+- **A funded channel or two** — outbound liquidity to melt, inbound to mint.
+- **API access** your mint can authenticate against in the next step.
+
+<Aside type="caution" title="Exact commands are on the way">
+  Until the step-by-step setup lands here, follow the official docs for your chosen
+  node — [LND](https://docs.lightning.engineering/) or
+  [Core Lightning](https://docs.corelightning.org/) — as the source of truth.
+</Aside>
+
+## Next
+
+<CardGrid>
+  <LinkCard
+    title="Next: Cashu Mint"
+    href="/new-mint/mint/"
+    description="Run a Cashu mint backed by the Lightning node you just stood up."
+  />
+</CardGrid>
