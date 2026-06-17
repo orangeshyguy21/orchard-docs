@@ -1,0 +1,44 @@
+---
+title: AI Agent
+description: Set up Orchard's AI agent — an agent harness that watches your Bitcoin, Lightning, and mint services so you don't have to live in the logs.
+---
+
+import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+Orchard includes an **AI agent** — an agent harness that watches your services and
+surfaces what needs attention, so you don't have to live in the logs. It reads the
+same health and activity Orchard already tracks and turns it into plain answers
+about how your mint is doing.
+
+## What it does
+
+- **Watches your stack** — Bitcoin, Lightning, the mint, and the machine they run
+  on — for trouble worth your attention.
+- **Answers in plain language** instead of raw logs and metrics.
+
+<Aside type="note" title="Optional">
+  The AI agent is an optional layer on top of Orchard's monitoring. Your mint runs
+  fine without it.
+</Aside>
+
+<Aside type="caution" title="Setup steps are on the way">
+  Orchard is under active development, and the steps for configuring the AI agent
+  are still being written — they land here. The
+  [Orchard repository](https://github.com/cashubtc/orchard) has the source code in
+  the meantime.
+</Aside>
+
+## Next
+
+<CardGrid>
+  <LinkCard
+    title="Next: Using Orchard"
+    href="/orchard/"
+    description="Everything's installed and connected — now operate your mint from the dashboard."
+  />
+  <LinkCard
+    title="Orchard on GitHub"
+    href="https://github.com/cashubtc/orchard"
+    description="The source code, releases, and issue tracker for the project."
+  />
+</CardGrid>

@@ -1,0 +1,39 @@
+---
+title: Taproot Assets
+description: Configure Taproot Assets for your Cashu mint in Orchard — manage Lightning-native assets alongside your sats mint from one place.
+---
+
+import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+[Taproot Assets](https://github.com/lightninglabs/taproot-assets) are assets
+issued on Bitcoin and transferable over Lightning. If your mint issues ecash
+backed by them, Orchard manages that configuration alongside the rest of your
+stack, so assets and sats live under one dashboard.
+
+## What to have ready
+
+- **A Lightning backend that speaks Taproot Assets**, connected to your mint and
+  reachable from Orchard.
+- **The asset details** your mint issues against.
+
+<Aside type="note" title="Optional">
+  Taproot Assets are an optional addition. If your mint only issues
+  sats-denominated ecash, you can skip this step.
+</Aside>
+
+<Aside type="caution" title="Configuration steps are on the way">
+  Orchard is under active development, and the steps for configuring Taproot Assets
+  are still being written — they land here. The
+  [Orchard repository](https://github.com/cashubtc/orchard) has the source code in
+  the meantime.
+</Aside>
+
+## Next
+
+<CardGrid>
+  <LinkCard
+    title="Next: Mint (Nutshell / CDK)"
+    href="/install/mint/"
+    description="Hand your running mint to Orchard to manage."
+  />
+</CardGrid>

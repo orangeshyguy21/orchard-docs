@@ -11,6 +11,16 @@ const site = 'https://docs.orchard.space';
 
 export default defineConfig({
   site,
+  // Old URLs from the previous "Existing Mint" structure now live under the
+  // "Install" section. Redirect them so inbound links and search results don't
+  // 404 (Astro emits static redirect pages for these in `dist/`).
+  redirects: {
+    '/existing-mint': '/install',
+    '/existing-mint/bitcoin-core': '/install/bitcoin',
+    '/existing-mint/lightning': '/install/lightning',
+    '/existing-mint/mint': '/install/mint',
+    '/new-mint/orchard': '/install/orchard',
+  },
   integrations: [
     starlight({
       title: 'Orchard Docs',
@@ -34,14 +44,14 @@ export default defineConfig({
             {
               label: 'New Mint',
               description:
-                'Stand up a full Cashu mint stack from scratch: system, Bitcoin, Lightning, the mint, then Orchard.',
+                'Stand up a full Cashu mint stack from scratch: system, Bitcoin, Lightning, and the mint.',
               paths: ['new-mint', 'new-mint/**'],
             },
             {
-              label: 'Existing Mint',
+              label: 'Install',
               description:
-                'Connect Orchard to Bitcoin, Lightning, and mint services you already run.',
-              paths: ['existing-mint', 'existing-mint/**'],
+                'Install Orchard and connect it to the services it manages: Bitcoin, Lightning, Taproot Assets, the mint, and the AI agent.',
+              paths: ['install', 'install/**'],
             },
             {
               label: 'Using Orchard',
@@ -95,16 +105,18 @@ export default defineConfig({
             { label: 'Bitcoin Node', slug: 'new-mint/bitcoin-node' },
             { label: 'Lightning Node', slug: 'new-mint/lightning-node' },
             { label: 'Cashu Mint', slug: 'new-mint/mint' },
-            { label: 'Orchard', slug: 'new-mint/orchard' },
           ],
         },
         {
-          label: 'Existing Mint',
+          label: 'Install',
           items: [
-            { label: 'Guide', slug: 'existing-mint' },
-            { label: 'Bitcoin Core', slug: 'existing-mint/bitcoin-core' },
-            { label: 'Lightning: LND or CLN', slug: 'existing-mint/lightning' },
-            { label: 'Mint: Nutshell or CDK', slug: 'existing-mint/mint' },
+            { label: 'Guide', slug: 'install' },
+            { label: 'Orchard', slug: 'install/orchard' },
+            { label: 'Bitcoin', slug: 'install/bitcoin' },
+            { label: 'Lightning', slug: 'install/lightning' },
+            { label: 'Taproot Assets', slug: 'install/taproot-assets' },
+            { label: 'Mint', slug: 'install/mint' },
+            { label: 'AI', slug: 'install/ai' },
           ],
         },
         {

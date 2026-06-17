@@ -1,0 +1,72 @@
+---
+title: Install
+description: Install Orchard and connect it to the services it manages — Bitcoin, Lightning, Taproot Assets, your mint, and the AI agent — from one place.
+---
+
+import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+Get Orchard running, then point it at the services you operate. Orchard *manages*
+a mint rather than replacing one, so this section is about installing the app and
+wiring it to each piece — whether you just built the stack with
+[New Mint](/new-mint/) or already run your own Bitcoin, Lightning, and mint.
+
+## Steps
+
+Install Orchard first, then work through each service you run. The layers build on
+one another — the mint settles against Lightning, which rides on Bitcoin — so the
+order below is the path of least surprise.
+
+<CardGrid>
+  <LinkCard
+    title="Orchard"
+    href="/install/orchard/"
+    description="Install and run the Orchard app on a box you control."
+  />
+  <LinkCard
+    title="Bitcoin"
+    href="/install/bitcoin/"
+    description="Point Orchard at the Bitcoin Core node your stack settles against."
+  />
+  <LinkCard
+    title="Lightning"
+    href="/install/lightning/"
+    description="Connect your existing LND or Core Lightning node."
+  />
+  <LinkCard
+    title="Taproot Assets"
+    href="/install/taproot-assets/"
+    description="Optionally configure Taproot Assets for your mint."
+  />
+  <LinkCard
+    title="Mint"
+    href="/install/mint/"
+    description="Hand your running Nutshell or CDK mint to Orchard to manage."
+  />
+  <LinkCard
+    title="AI"
+    href="/install/ai/"
+    description="Set up the AI agent that watches your services."
+  />
+</CardGrid>
+
+<Aside type="caution" title="Per-service steps are on the way">
+  Orchard is under active development, and the install and connection steps for
+  each piece are still being written — they land here. The
+  [Orchard repository](https://github.com/cashubtc/orchard) has the source code in
+  the meantime.
+</Aside>
+
+## After install
+
+<CardGrid>
+  <LinkCard
+    title="Then: Using Orchard"
+    href="/orchard/"
+    description="Once Orchard is installed and connected, operate your mint from the dashboard."
+  />
+  <LinkCard
+    title="Starting from scratch?"
+    href="/new-mint/"
+    description="The New Mint walkthrough stands up Bitcoin, Lightning, and your mint first."
+  />
+</CardGrid>

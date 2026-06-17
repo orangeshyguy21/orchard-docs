@@ -1,19 +1,20 @@
 ---
-title: Set Up Orchard
-description: Point Orchard at the Bitcoin, Lightning, and mint stack you just built and manage your sovereign Cashu mint from a single dashboard.
+title: Install Orchard
+description: Install and run the Orchard app on a box you control — the first step before connecting it to your Bitcoin, Lightning, and mint services.
 ---
 
 import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-The last step. With Bitcoin, Lightning, and your mint all running, Orchard ties
-them together — keys, balances, and mint health in one dashboard, so you tend the
-mint instead of babysitting a terminal.
+Start here. Orchard is a self-hosted web app you run on a box you control — get it
+installed and running first, then point it at each service from the pages that
+follow. Once it's wired up, keys, balances, and mint health live in one dashboard,
+so you tend the mint instead of babysitting a terminal.
 
 ## What you'll set up
 
 - **Somewhere to run Orchard** — a VPS, home server, or any box you keep online.
-- **A connection to your mint**, so Orchard can read and manage it.
-- **The dashboard**, where balances, keys, and mint info come together.
+- **The Orchard app itself**, installed and running on that machine.
+- **Access to the dashboard**, ready to connect to your services.
 
 <Aside type="tip" title="The groundskeeper">
   Orchard watches the mint so you don't have to refresh a log all day — health and
@@ -27,13 +28,13 @@ mint instead of babysitting a terminal.
   the meantime.
 </Aside>
 
-## Next steps
+## Next
 
 <CardGrid>
   <LinkCard
-    title="Next: Using Orchard"
-    href="/orchard/"
-    description="Your mint is up — now operate it from the dashboard and configure what you need."
+    title="Next: Connect Bitcoin"
+    href="/install/bitcoin/"
+    description="Point Orchard at the Bitcoin Core node your stack settles against."
   />
   <LinkCard
     title="Orchard on GitHub"
