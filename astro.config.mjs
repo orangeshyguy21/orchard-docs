@@ -50,7 +50,7 @@ export default defineConfig({
         {
           label: 'New Mint',
           items: [
-            { label: 'Overview', slug: 'new-mint' },
+            { label: 'Guide', slug: 'new-mint' },
             { label: 'Bitcoin Node', slug: 'new-mint/bitcoin-node' },
             { label: 'Lightning Node', slug: 'new-mint/lightning-node' },
             { label: 'Cashu Mint', slug: 'new-mint/mint' },
@@ -60,7 +60,7 @@ export default defineConfig({
         {
           label: 'Existing Mint',
           items: [
-            { label: 'Overview', slug: 'existing-mint' },
+            { label: 'Guide', slug: 'existing-mint' },
             { label: 'Bitcoin Core', slug: 'existing-mint/bitcoin-core' },
             { label: 'Lightning: LND or CLN', slug: 'existing-mint/lightning' },
             { label: 'Mint: Nutshell or CDK', slug: 'existing-mint/mint' },
@@ -69,7 +69,7 @@ export default defineConfig({
         {
           label: 'Using Orchard',
           items: [
-            { label: 'Overview', slug: 'orchard' },
+            { label: 'Guide', slug: 'orchard' },
             { label: 'The Dashboard', slug: 'orchard/dashboard' },
             { label: 'Monitoring & Health', slug: 'orchard/monitoring' },
             { label: 'Configuration', slug: 'orchard/configuration' },

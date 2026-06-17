@@ -147,6 +147,62 @@
   background-color: color-mix(in srgb, var(--sl-color-accent) 15%, transparent);
 }
 
+/* Asides / callouts. Starlight maps each <Aside> type to a semantic color ramp
+ * (note→blue, tip→purple, caution→orange, danger→red) we never define, so they
+ * fall back to its stock cool defaults — off-brand against the warm palette.
+ * Re-skin the four variants onto a warm severity ramp: a neutral cream panel for
+ * note, then orange → gold → red as it escalates; the per-type icon carries the
+ * rest of the distinction. Un-layered so these beat Starlight's layered rules.
+ * Title, border, and inline-link colors all derive from --sl-color-asides-text-accent
+ * and are tuned to clear WCAG AA on each variant's tint in both themes. */
+.starlight-aside--note {
+  --sl-color-asides-text-accent: var(--sl-color-white);
+  --sl-color-asides-border: var(--sl-color-gray-3);
+  background-color: var(--sl-color-gray-6);
+}
+/* Note's title rides the body cream (calm, default), so lift its links to the
+ * gold accent — otherwise they'd vanish into the surrounding content text. */
+.starlight-aside--note .starlight-aside__content a {
+  color: var(--sl-color-accent-high);
+}
+.starlight-aside--tip {
+  --sl-color-asides-text-accent: var(--color-theme-3); /* orange */
+  --sl-color-asides-border: var(--color-theme-3);
+  background-color: var(--sl-color-accent-low);
+}
+.starlight-aside--caution {
+  --sl-color-asides-text-accent: var(--color-theme-2); /* gold */
+  --sl-color-asides-border: var(--color-theme-2);
+  background-color: color-mix(in srgb, var(--color-theme-2) 14%, var(--sl-color-black));
+}
+.starlight-aside--danger {
+  --sl-color-asides-text-accent: #ef6651; /* brand red lifted for AA on near-black */
+  --sl-color-asides-border: var(--color-theme-5);
+  background-color: color-mix(in srgb, var(--color-theme-5) 18%, var(--sl-color-black));
+}
+
+/* Light theme: titles/links need dark, saturated hues to clear AA on the cream
+ * tints (the dark-theme brights wash out). Backgrounds re-tint off the page cream
+ * via --sl-color-black, which flips to the light page color under this selector. */
+:root[data-theme='light'] .starlight-aside--note {
+  --sl-color-asides-border: var(--sl-color-gray-4);
+}
+:root[data-theme='light'] .starlight-aside--tip {
+  --sl-color-asides-text-accent: #a8430b; /* deep orange */
+  --sl-color-asides-border: var(--sl-color-accent);
+  background-color: color-mix(in srgb, var(--color-theme-3) 16%, var(--sl-color-black));
+}
+:root[data-theme='light'] .starlight-aside--caution {
+  --sl-color-asides-text-accent: #7d4d00; /* dark amber */
+  --sl-color-asides-border: var(--color-theme-3);
+  background-color: color-mix(in srgb, var(--color-theme-2) 18%, var(--sl-color-black));
+}
+:root[data-theme='light'] .starlight-aside--danger {
+  --sl-color-asides-text-accent: var(--color-theme-5); /* dark red reads AA on cream */
+  --sl-color-asides-border: var(--color-theme-5);
+  background-color: color-mix(in srgb, var(--color-theme-5) 16%, var(--sl-color-black));
+}
+
 /* Overview hero: lead subtitle + the Get started / Copy prompt CTA pair, echoing
  * the Cloudflare docs landing while staying inside the standard doc layout. */
 .sl-markdown-content .lead {
