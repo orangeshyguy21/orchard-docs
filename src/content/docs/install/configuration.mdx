@@ -5,7 +5,7 @@ description: Every Orchard configuration option, set in your .env file — the c
 
 import { Aside, CardGrid, LinkCard, Tabs, TabItem } from '@astrojs/starlight/components';
 
-Some settings are configured with environment variables, read from a `.env` file in the
+These settings are configured with environment variables, read from a `.env` file in the
 project root. Copy the template and edit it:
 
 ```bash
@@ -15,7 +15,7 @@ nano .env
 
 ## Orchard
 
-The Orchard app's own settings, separate from the services it connects to below.
+The Orchard app itself has some configuration options, separate from the services it connects to below.
 
 ### Required
 
@@ -81,10 +81,9 @@ CRYPTO_KEY=                 # encryption key for app settings
 
 ## Services
 
-Every service below is optional. Orchard needs only the ones your mint actually uses,
-and each one you connect unlocks the matching features in the dashboard. If your mint's
-backend isn't a Lightning node, for example, you can connect just the mint and skip the
-rest.
+Each service below is optional and independent of the rest. Connect whichever ones you
+want. Each unlocks its matching features in the application. That might be a full
+stack, just your mint, or only your Lightning node.
 
 ### Bitcoin
 
