@@ -36,14 +36,22 @@ export default defineConfig({
   markdown: {
     rehypePlugins: [rehypeExternalLinksNewTab],
   },
-  // Old URLs from the previous "Existing Mint" structure now live under the
-  // "Install" section. Redirect them so inbound links and search results don't
-  // 404 (Astro emits static redirect pages for these in `dist/`).
+  // Old URLs that no longer have their own page. The Install section is now
+  // Overview / Installation / Configuration; the per-service connection steps
+  // are env-var settings that live on the Configuration page, and the legacy
+  // "Existing Mint" URLs fold in here too. Redirect them all so inbound links
+  // and search results don't 404 (Astro emits static redirect pages in `dist/`).
   redirects: {
     '/existing-mint': '/install',
-    '/existing-mint/bitcoin-core': '/install/bitcoin',
-    '/existing-mint/lightning': '/install/lightning',
-    '/existing-mint/mint': '/install/mint',
+    '/existing-mint/bitcoin-core': '/install/configuration',
+    '/existing-mint/lightning': '/install/configuration',
+    '/existing-mint/mint': '/install/configuration',
+    '/install/orchard': '/install/installation',
+    '/install/bitcoin': '/install/configuration',
+    '/install/lightning': '/install/configuration',
+    '/install/taproot-assets': '/install/configuration',
+    '/install/mint': '/install/configuration',
+    '/install/ai': '/orchard',
   },
   integrations: [
     starlight({
@@ -74,7 +82,7 @@ export default defineConfig({
             {
               label: 'Install',
               description:
-                'Install Orchard and connect it to the services it manages: Bitcoin, Lightning, Taproot Assets, the mint, and the AI agent.',
+                'Install Orchard (Node.js or Docker) and configure it with environment variables, including how to connect the services it manages: Bitcoin, Lightning, Taproot Assets, and the mint.',
               paths: ['install', 'install/**'],
             },
             {
@@ -135,13 +143,9 @@ export default defineConfig({
         {
           label: 'Install',
           items: [
-            { label: 'Install', slug: 'install' },
-            { label: 'Orchard', slug: 'install/orchard' },
-            { label: 'Bitcoin', slug: 'install/bitcoin' },
-            { label: 'Lightning', slug: 'install/lightning' },
-            { label: 'Taproot Assets', slug: 'install/taproot-assets' },
-            { label: 'Mint', slug: 'install/mint' },
-            { label: 'AI', slug: 'install/ai' },
+            { label: 'Overview', slug: 'install' },
+            { label: 'Installation', slug: 'install/installation' },
+            { label: 'Configuration', slug: 'install/configuration' },
           ],
         },
         {

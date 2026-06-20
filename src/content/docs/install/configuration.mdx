@@ -1,0 +1,137 @@
+---
+title: Configuration
+description: Every Orchard configuration option, set in your .env file — the core server settings plus how to point Orchard at your Bitcoin, Lightning, Taproot Assets, and Cashu mint services.
+---
+
+import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+Orchard is configured with environment variables, read from a `.env` file in the
+project root. Copy the template and edit it:
+
+```bash
+cp .env.example .env
+nano .env
+```
+
+Only the **Orchard** settings are needed to start the app — the service blocks
+(Bitcoin, Lightning, Taproot Assets, Cashu mint) are optional, and you set the ones
+for services you actually run. Everything in-app — AI agent, device, and account
+settings — is configured from the dashboard once Orchard is running, not here.
+
+<Aside type="tip" title="Defaults are baked in">
+  Every variable below shows its default. Leave one unset and Orchard uses that
+  default, so your `.env` only needs the values you want to change — starting with
+  `SETUP_KEY`.
+</Aside>
+
+## Orchard
+
+The app's own settings. `SETUP_KEY` is the one you must set; the rest default to
+working values.
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| `SETUP_KEY` | Secret that guards first-run setup and admin access. **Set this.** (legacy alias: `ADMIN_PASSWORD`) | — |
+| `SERVER_HOST` | Address the server binds to. | `localhost` |
+| `SERVER_PORT` | Port Orchard listens on. | `3321` |
+| `LOG_LEVEL` | Log verbosity: `error`, `warn`, `info`, `debug`. | `warn` |
+
+### Defaults you rarely change
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| `BASE_PATH` | URL path prefix for the API. | `api` |
+| `THROTTLE_TTL` | Rate-limit window, in milliseconds. | `60000` |
+| `THROTTLE_LIMIT` | Requests allowed per window. | `20` |
+| `DATABASE_DIR` | Directory for Orchard's own database (`<dir>/orchard.db`). | `data` |
+
+### Optional
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| `TOR_PROXY_SERVER` | SOCKS proxy for outbound connections, e.g. `socks://127.0.0.1:9050`. | unset |
+| `SERVER_COMPRESSION` | Enable HTTP response compression — set to `true`. | `false` |
+| `CRYPTO_KEY` | Key that encrypts stored settings. Auto-generated and saved if unset; set it to control the value yourself. | auto |
+
+<Aside type="caution" title="The example file misspells one variable">
+  `.env.example` lists `SERVER_COMPESSION`, but Orchard reads `SERVER_COMPRESSION`
+  (with the **R**). Use the spelling shown here, or the setting is silently ignored.
+</Aside>
+
+## Bitcoin
+
+Optional. Point Orchard at the Bitcoin Core node your stack settles against, over RPC.
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| `BITCOIN_TYPE` | Node implementation. Valid: `core` (Knots is compatible). | — |
+| `BITCOIN_RPC_HOST` | RPC host. | `localhost` |
+| `BITCOIN_RPC_PORT` | RPC port. | `8332` |
+| `BITCOIN_RPC_USER` | RPC username. | — |
+| `BITCOIN_RPC_PASSWORD` | RPC password. | — |
+
+## Lightning
+
+Optional. Connect the Lightning node that sits between Bitcoin and your mint.
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| `LIGHTNING_TYPE` | Implementation. Valid: `lnd`, `cln`. | — |
+| `LIGHTNING_RPC_HOST` | RPC host. | `localhost` |
+| `LIGHTNING_RPC_PORT` | RPC port. | — |
+| `LIGHTNING_MACAROON` | Path to the macaroon Orchard authenticates with. | — |
+| `LIGHTNING_CERT` | Path to the node's TLS certificate. | — |
+| `LIGHTNING_KEY` | Path to the client key — **CLN only**. | — |
+| `LIGHTNING_CA` | Path to the CA certificate — **CLN only**. | — |
+
+## Taproot Assets
+
+Optional. Manage Lightning-native assets alongside your sats mint.
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| `TAPROOT_ASSETS_TYPE` | Implementation. Valid: `tapd`. | — |
+| `TAPROOT_ASSETS_RPC_HOST` | RPC host. | `localhost` |
+| `TAPROOT_ASSETS_RPC_PORT` | RPC port. | — |
+| `TAPROOT_ASSETS_MACAROON` | Path to the `tapd` macaroon. | — |
+| `TAPROOT_ASSETS_CERT` | Path to the `tapd` TLS certificate. | — |
+
+## Cashu mint
+
+Optional, but this is the layer Orchard manages directly. Orchard reads the mint's
+database to surface keys and balances, and talks to its RPC to manage it.
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| `MINT_TYPE` | Mint implementation. Valid: `cdk`, `nutshell`. | — |
+| `MINT_API` | The mint's public HTTP API, e.g. `http://localhost:5551`. | — |
+| `MINT_DATABASE` | Mint database Orchard reads directly: a SQLite file path, or a `postgres://` URL. | — |
+| `MINT_DATABASE_CA` | CA certificate for a TLS Postgres connection. | — |
+| `MINT_DATABASE_CERT` | Client certificate for a TLS Postgres connection. | — |
+| `MINT_DATABASE_KEY` | Client key for a TLS Postgres connection. | — |
+| `MINT_RPC_HOST` | Mint management RPC host. | `localhost` |
+| `MINT_RPC_PORT` | Mint management RPC port. | — |
+| `MINT_RPC_MTLS` | Force mutual-TLS on the RPC on (`true`) or off (`false`). Defaults on when the key, cert, and CA below are all set. | auto |
+| `MINT_RPC_KEY` | Path to the RPC client key. | — |
+| `MINT_RPC_CERT` | Path to the RPC client certificate. | — |
+| `MINT_RPC_CA` | Path to the RPC CA certificate. | — |
+
+<Aside type="note" title="Running Nutshell in Docker?">
+  Nutshell's mint RPC can run without certificates. To allow that from a container,
+  set `MINT_RPC_MTLS=false` in `.env`.
+</Aside>
+
+## Next
+
+<CardGrid>
+  <LinkCard
+    title="Then: Using Orchard"
+    href="/orchard/"
+    description="Once Orchard is installed and configured, operate your mint from the dashboard."
+  />
+  <LinkCard
+    title="Back to Installation"
+    href="/install/installation/"
+    description="The standard and Docker install methods, and how to update."
+  />
+</CardGrid>

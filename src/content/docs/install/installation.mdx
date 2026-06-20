@@ -1,0 +1,135 @@
+---
+title: Installing Orchard
+description: Install Orchard the way that suits your box — a standard Node.js install from source, or Docker from source or the prebuilt registry image. Always pinned to a release tag.
+---
+
+import { Aside, CardGrid, LinkCard, Tabs, TabItem } from '@astrojs/starlight/components';
+
+Orchard is a self-hosted web app you run on a box you keep online — a VPS, a home
+server, or the same machine your mint runs on. Install it once, point it at your
+services on the [Configuration](/install/configuration/) page, and you tend keys,
+balances, and health from one dashboard instead of a terminal.
+
+There are two ways to install it: a **standard** install with Node.js, or **Docker**
+(from source or from the prebuilt image). Pick one — they end up at the same place,
+a running Orchard on `SERVER_PORT` (`3321` by default).
+
+## Prerequisites
+
+- **A box to run it on**, reachable by you and able to reach the services it
+  manages (Bitcoin, Lightning, your mint).
+- **For the standard install:** [Node.js](https://nodejs.org) **v22**, which
+  includes npm.
+- **For the Docker install:** Docker with the Compose plugin.
+
+## Get the code
+
+Both install paths start from a checked-out release tag. Clone the repository and
+check out the latest release — never run from `master`.
+
+```bash
+git clone https://github.com/cashubtc/orchard.git
+cd orchard
+git fetch --tags
+git checkout v1.9.0   # use the latest release tag
+```
+
+<Aside type="caution" title="Always run a release tag">
+  Running from `master` is unsupported and may leave your database in a state that
+  can't be cleanly upgraded. Check out the latest tag from the
+  [releases page](https://github.com/cashubtc/orchard/releases) before installing or
+  updating.
+</Aside>
+
+## Configure
+
+Before the first run, create your `.env` from the example and fill it in:
+
+```bash
+cp .env.example .env
+nano .env
+```
+
+At minimum set `SETUP_KEY`; everything else has a sensible default or is optional.
+The [Configuration](/install/configuration/) page walks through every option,
+including how to point Orchard at your Bitcoin, Lightning, and mint services.
+
+## Install
+
+<Tabs>
+  <TabItem label="Standard (Node.js)">
+    Install dependencies, build the app, and start it:
+
+    ```bash
+    npm install
+    npm run build
+    npm run start
+    ```
+
+    Orchard now serves on `SERVER_HOST:SERVER_PORT` (`localhost:3321` by default).
+    Open that address to reach the dashboard.
+  </TabItem>
+  <TabItem label="Docker (from source)">
+    Build the image from the checked-out source and start it in the background:
+
+    ```bash
+    docker compose build
+    docker compose up -d
+    ```
+  </TabItem>
+  <TabItem label="Docker (registry image)">
+    Skip the build and pull the prebuilt image from
+    [GitHub Container Registry](https://github.com/cashubtc/orchard/pkgs/container/orchard):
+
+    ```bash
+    docker compose -f docker-compose.yml -f compose.image.yml up -d
+    ```
+
+    The image defaults to `latest`. Pin a release by setting `VERSION` in `.env`
+    (or inline), for example `VERSION=1.9.0`.
+  </TabItem>
+</Tabs>
+
+<Aside type="note" title="Docker rewrites localhost for you">
+  Inside a container, `localhost` no longer means the host machine. Orchard runs
+  with `DOCKER_ENV=true` in Docker and automatically rewrites `localhost` and
+  `127.0.0.1` in your host and URL settings to `host.docker.internal`, so you can
+  keep using `localhost` in `.env`.
+</Aside>
+
+<Aside type="note" title="Pointing Docker at your mint database">
+  Orchard reads the mint's database directly. In Docker, give it access in `.env`:
+  set `MINT_DATABASE` to a Postgres URL, or for SQLite set `MINT_DATANAME` (the
+  database filename) and `MINT_DATADIR` (the host directory that holds it) so the
+  file is mounted into the container.
+</Aside>
+
+## Updating
+
+Check out the new release tag, then rebuild. For the standard install:
+
+```bash
+git fetch --tags
+git checkout v1.9.1   # the new release tag
+npm install
+npm run build
+npm run start
+```
+
+For Docker, check out the new tag and rebuild (`docker compose build && docker
+compose up -d`), or bump `VERSION` and re-up when running the registry image.
+
+## Next
+
+<CardGrid>
+  <LinkCard
+    title="Next: Configuration"
+    href="/install/configuration/"
+    description="Set SETUP_KEY and point Orchard at your Bitcoin, Lightning, and mint services."
+  />
+  <LinkCard
+    title="Orchard on GitHub"
+    href="https://github.com/cashubtc/orchard"
+    description="The source code, releases, and issue tracker for the project."
+  />
+</CardGrid>
