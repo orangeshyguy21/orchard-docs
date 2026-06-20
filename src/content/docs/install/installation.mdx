@@ -3,16 +3,11 @@ title: Installing Orchard
 description: Install Orchard the way that suits your box — a standard Node.js install from source, or Docker from source or the prebuilt registry image. Always pinned to a release tag.
 ---
 
-import { Aside, CardGrid, LinkCard, Tabs, TabItem } from '@astrojs/starlight/components';
+import { Aside, Code, CardGrid, LinkCard, Tabs, TabItem } from '@astrojs/starlight/components';
+import { latestTag, latestVersion } from '../../../data/latest-releases';
 
-Orchard is a self-hosted web app you run on a box you keep online — a VPS, a home
-server, or the same machine your mint runs on. Install it once, point it at your
-services on the [Configuration](/install/configuration/) page, and you tend keys,
-balances, and health from one dashboard instead of a terminal.
-
-There are two ways to install it: a **standard** install with Node.js, or **Docker**
-(from source or from the prebuilt image). Pick one — they end up at the same place,
-a running Orchard on `SERVER_PORT` (`3321` by default).
+There are two ways to install Orchard: a **standard** install built from source, or **Docker**
+(from source or from the prebuilt image). Choose whichever suits your setup.
 
 ## Prerequisites
 
@@ -27,12 +22,13 @@ a running Orchard on `SERVER_PORT` (`3321` by default).
 Both install paths start from a checked-out release tag. Clone the repository and
 check out the latest release — never run from `master`.
 
-```bash
-git clone https://github.com/cashubtc/orchard.git
+<Code
+  lang="bash"
+  code={`git clone https://github.com/cashubtc/orchard.git
 cd orchard
 git fetch --tags
-git checkout v1.9.0   # use the latest release tag
-```
+git checkout ${latestTag}   # latest release tag`}
+/>
 
 <Aside type="caution" title="Always run a release tag">
   Running from `master` is unsupported and may leave your database in a state that
@@ -86,7 +82,7 @@ including how to point Orchard at your Bitcoin, Lightning, and mint services.
     ```
 
     The image defaults to `latest`. Pin a release by setting `VERSION` in `.env`
-    (or inline), for example `VERSION=1.9.0`.
+    (or inline), for example <code>VERSION={latestVersion}</code>.
   </TabItem>
 </Tabs>
 
@@ -108,13 +104,14 @@ including how to point Orchard at your Bitcoin, Lightning, and mint services.
 
 Check out the new release tag, then rebuild. For the standard install:
 
-```bash
-git fetch --tags
-git checkout v1.9.1   # the new release tag
+<Code
+  lang="bash"
+  code={`git fetch --tags
+git checkout ${latestTag}   # the latest release tag
 npm install
 npm run build
-npm run start
-```
+npm run start`}
+/>
 
 For Docker, check out the new tag and rebuild (`docker compose build && docker
 compose up -d`), or bump `VERSION` and re-up when running the registry image.

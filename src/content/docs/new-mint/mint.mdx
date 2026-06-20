@@ -3,7 +3,8 @@ title: Run a Cashu Mint
 description: Install a CDK Cashu mint (cdk-mintd) from the official prebuilt binary, backed by your own LND node — with Postgres, Redis, Prometheus metrics, a hardened systemd service, and a Cloudflare Tunnel to put it online. Part of the New Mint walkthrough.
 ---
 
-import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+import { Aside, Code, CardGrid, LinkCard } from '@astrojs/starlight/components';
+import { latestCdkVersion } from '../../../data/latest-releases';
 
 The mint itself: the service that issues and redeems Chaumian ecash against your
 Lightning node. This is the piece Orchard manages, so once it is running and
@@ -180,13 +181,14 @@ Prometheus features this guide uses, so there is nothing to compile.
 * With user `admin`, download the release binary for your architecture and its checksum
   file
 
-```bash
-cd /tmp
-VERSION=0.17.1
+<Code
+  lang="bash"
+  code={`cd /tmp
+VERSION=${latestCdkVersion}
 ARCH=$(uname -m)
 wget https://github.com/cashubtc/cdk/releases/download/v$VERSION/cdk-mintd-$VERSION-$ARCH
-wget https://github.com/cashubtc/cdk/releases/download/v$VERSION/SHA256SUMS
-```
+wget https://github.com/cashubtc/cdk/releases/download/v$VERSION/SHA256SUMS`}
+/>
 
 * Verify the download against the checksum published with the release
 
@@ -196,9 +198,7 @@ sha256sum --check --ignore-missing SHA256SUMS
 
 **Example** of expected output:
 
-```
-cdk-mintd-0.17.1-x86_64: OK
-```
+<Code code={`cdk-mintd-${latestCdkVersion}-x86_64: OK`} />
 
 * Install the binary to a system path, confirm the version, and remove the downloads
 
@@ -210,9 +210,7 @@ rm cdk-mintd-$VERSION-$ARCH SHA256SUMS
 
 **Example** of expected output:
 
-```
-cdk-mintd 0.17.1
-```
+<Code code={`cdk-mintd ${latestCdkVersion}`} />
 
 ### Create the data directory
 
@@ -448,9 +446,7 @@ curl http://127.0.0.1:8085/v1/info
 
 **Example** of expected output (truncated):
 
-```
-{"name":"Your Mint","version":"cdk-mintd/0.17.1","description":"A Cashu mint backed by my own Lightning node","contact":[...],"nuts":{...}}
-```
+<Code code={`{"name":"Your Mint","version":"cdk-mintd/${latestCdkVersion}","description":"A Cashu mint backed by my own Lightning node","contact":[...],"nuts":{...}}`} />
 
 <Aside type="tip" title="Mint is up">
   A JSON response from `/v1/info` means the daemon built its keysets, reached Postgres
@@ -709,14 +705,15 @@ sudo systemctl stop cdk-mintd
 * Download the new release binary and its checksum for your architecture (replace the
   version with the release you want)
 
-```bash
-cd /tmp
-VERSION=0.17.1
+<Code
+  lang="bash"
+  code={`cd /tmp
+VERSION=${latestCdkVersion}
 ARCH=$(uname -m)
 wget https://github.com/cashubtc/cdk/releases/download/v$VERSION/cdk-mintd-$VERSION-$ARCH
 wget https://github.com/cashubtc/cdk/releases/download/v$VERSION/SHA256SUMS
-sha256sum --check --ignore-missing SHA256SUMS
-```
+sha256sum --check --ignore-missing SHA256SUMS`}
+/>
 
 * Replace the binary, clean up, and start the service again
 

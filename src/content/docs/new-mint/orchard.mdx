@@ -3,7 +3,8 @@ title: Install Orchard
 description: Install Orchard from source with its own user and point it at the Bitcoin, Lightning, and Cashu mint you just built. The final step of the New Mint walkthrough, after which you manage the whole stack from one private dashboard.
 ---
 
-import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+import { Aside, Code, CardGrid, LinkCard } from '@astrojs/starlight/components';
+import { latestTag } from '../../../data/latest-releases';
 
 Orchard itself: the web app that manages the stack you just built. It connects to your
 Bitcoin node, your Lightning node, and your Cashu mint, and surfaces them in one
@@ -120,11 +121,12 @@ sudo su - orchard
 * Clone Orchard and check out the latest release. Do not run from `master`: it is
   unsupported and can leave the database in a state that will not upgrade cleanly
 
-```bash
-git clone https://github.com/cashubtc/orchard.git && cd orchard
+<Code
+  lang="bash"
+  code={`git clone https://github.com/cashubtc/orchard.git && cd orchard
 git fetch --tags
-git checkout v1.9.0
-```
+git checkout ${latestTag}`}
+/>
 
 * Install the dependencies and build the app
 
@@ -363,18 +365,19 @@ device. Keep it to yourself: this is your admin dashboard.
 sudo systemctl stop orchard
 ```
 
-* Change to the `orchard` user, check out the new release, and rebuild (replace
-  `v1.9.0` with the release you want)
+* Change to the `orchard` user, check out the new release, and rebuild (the tag
+  below is the latest; substitute another release tag to pin a specific version)
 
-```bash
-sudo su - orchard
+<Code
+  lang="bash"
+  code={`sudo su - orchard
 cd orchard
 git fetch --tags
-git checkout v1.9.0
+git checkout ${latestTag}
 npm install
 npm run build
-exit
-```
+exit`}
+/>
 
 * With user `admin`, start the service again
 
