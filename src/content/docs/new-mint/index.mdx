@@ -23,10 +23,14 @@ connect Orchard to each service to manage everything from one place.
 4. **[Cashu mint](/new-mint/mint/)** — issues and redeems ecash against that
    Lightning node.
 
+5. **[Orchard](/new-mint/orchard/)** — the manager. Install Orchard, point it at
+   everything above, and tend the whole stack from one dashboard.
+
 </Steps>
 
-Once all four are running, head to **[Install](/install/)** to set up Orchard and
-point it at each one.
+Once all five are in place, you operate the mint from the Orchard dashboard. Already
+run some of these services yourself? See [Install](/install/) to connect Orchard to a
+stack you already have.
 
 <Aside type="tip" title="Already have part of the stack?">
   Already running a Bitcoin or Lightning node? Pick up at the step you still
@@ -58,8 +62,7 @@ note the Orchard-specific adjustments on each step. Two guides shaped this path:
   />
 </CardGrid>
 
-Orchard's own docs pick up where MiniBolt leaves off, at the Cashu mint and the
-[Install](/install/) steps.
+Orchard's own docs pick up where MiniBolt leaves off, at the Cashu mint and Orchard.
 
 <Aside type="note" title="Node-in-a-box setups">
   Umbrel, Start9, and similar appliances are great for plug-and-play
@@ -91,14 +94,24 @@ Orchard's own docs pick up where MiniBolt leaves off, at the Cashu mint and the
     href="/new-mint/mint/"
     description="Run a Cashu mint backed by your Lightning node."
   />
+  <LinkCard
+    title="5. Orchard"
+    href="/new-mint/orchard/"
+    description="Install Orchard and manage the whole stack from one dashboard."
+  />
 </CardGrid>
 
 ## After new mint
 
 <CardGrid>
   <LinkCard
-    title="Install Orchard"
+    title="Using Orchard"
+    href="/orchard/"
+    description="Stack built and managed? Operate the mint from the dashboard."
+  />
+  <LinkCard
+    title="Connect an existing stack"
     href="/install/"
-    description="Stack built? Install Orchard and connect it to each service."
+    description="Already run your own services? The Install pages connect Orchard to them."
   />
 </CardGrid>
