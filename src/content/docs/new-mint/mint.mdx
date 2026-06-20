@@ -1,6 +1,6 @@
 ---
 title: Run a Cashu Mint
-description: Build a CDK Cashu mint (cdk-mintd) from source on Linux, backed by your own LND node — with Postgres, Redis, Prometheus metrics, a hardened systemd service, and a Cloudflare Tunnel to put it online. Part of the New Mint walkthrough.
+description: Install a CDK Cashu mint (cdk-mintd) from the official prebuilt binary, backed by your own LND node — with Postgres, Redis, Prometheus metrics, a hardened systemd service, and a Cloudflare Tunnel to put it online. Part of the New Mint walkthrough.
 ---
 
 import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
@@ -13,8 +13,8 @@ The base layers handed off to [MiniBolt](https://minibolt.minibolt.info). There 
 no MiniBolt page for a Cashu mint, so this page is the full walkthrough, written in
 the same format. It uses [CDK](https://github.com/cashubtc/cdk), the Cashu
 Development Kit, whose `cdk-mintd` is a production-minded mint daemon in Rust. You
-build it from source, point it at your LND node, store its data in the Postgres you
-set up for Lightning, and expose it on the internet with a Cloudflare Tunnel.
+install its official prebuilt binary, point it at your LND node, store its data in the
+Postgres you set up for Lightning, and expose it on the internet with a Cloudflare Tunnel.
 
 <Aside type="note" title="Why not Nutshell?">
   This guide uses CDK. `cdk-mintd` is the best choice for a mint in
@@ -24,7 +24,7 @@ set up for Lightning, and expose it on the internet with a Cloudflare Tunnel.
 
 ## What this step covers
 
-- **`cdk-mintd` built from source** and installed as a system binary.
+- **`cdk-mintd` installed from its official prebuilt binary**, checksum-verified and placed as a system binary.
 - **An isolated `cdk-mintd` service user** that reads your LND node's TLS
   certificate and macaroon, with no other privileges.
 - **Postgres, Redis, and Prometheus** wired in: Postgres for the mint database
@@ -44,8 +44,6 @@ set up for Lightning, and expose it on the internet with a Cloudflare Tunnel.
   followed its tip to choose the Postgres backend. You reuse that instance here.
 - **A domain on Cloudflare.** The mint is exposed through a Cloudflare Tunnel, which
   needs a domain whose nameservers point at Cloudflare (the free plan is enough).
-- **Build headroom.** Compiling `cdk-mintd` from source needs the Rust toolchain and
-  a few hundred MB of disk for the build.
 
 <Aside type="caution" title="Postgres comes from the Lightning step">
   This guide assumes you took MiniBolt's **PostgreSQL** path for LND, not the default
@@ -57,18 +55,6 @@ set up for Lightning, and expose it on the internet with a Cloudflare Tunnel.
 
 ## Preparations
 
-### Install the build dependencies
-
-The LND backend talks gRPC, so the Protocol Buffers compiler is required alongside
-the usual build toolchain.
-
-* With user `admin`, update the package list and install the build dependencies
-
-```bash
-sudo apt update
-sudo apt install build-essential pkg-config libssl-dev protobuf-compiler curl gnupg
-```
-
 ### Install Redis
 
 `cdk-mintd` caches deterministic responses (NUT-19) so a retried mint, swap, or melt
@@ -78,6 +64,7 @@ Redis keeps it across restarts.
 * With user `admin`, install Redis and enable it to start on boot
 
 ```bash
+sudo apt update
 sudo apt install redis-server
 sudo systemctl enable redis-server
 ```
@@ -96,21 +83,20 @@ tcp   LISTEN 0   511   127.0.0.1:6379   0.0.0.0:*   users:(("redis-server",pid=1
 
 ### Create the mint database
 
-Reuse the Postgres instance your LND node runs on. The `admin` role created in the
-Lightning step already has `CREATEDB`, so you only need to add a database for the
-mint.
+Reuse the Postgres instance your LND node runs on, but give the mint its own role
+instead of the shared `admin` one. Create a `cdk_mintd` role and a database it owns.
 
-* With user `admin`, create the `cdk_mintd` database owned by the `admin` role
+* With user `admin`, create the role and its database, choosing a strong password
 
 ```bash
-sudo -u postgres createdb -O admin cdk_mintd
+sudo -u postgres psql -c "CREATE ROLE cdk_mintd WITH LOGIN PASSWORD 'your-mint-db-password';"
+sudo -u postgres createdb -O cdk_mintd cdk_mintd
 ```
 
-<Aside type="tip" title="Harden the database credentials">
-  MiniBolt's `admin` role uses the password `admin`, which is acceptable when Postgres is
-  reachable only from this machine. A mint holds value, so consider creating a dedicated
-  role with a strong password for `cdk_mintd` and using it in the connection URL
-  below instead.
+<Aside type="note" title="Pick a real password">
+  Replace `your-mint-db-password` with one you generate, and use the same value in the
+  connection URL below. The mint owns this database; Orchard later connects with a
+  separate read-only role (see the [Orchard step](/new-mint/orchard/)).
 </Aside>
 
 ## Installation
@@ -186,91 +172,40 @@ sudo chmod g+r /data/lnd/data/chain/bitcoin/mainnet/admin.macaroon
   config at that instead (see [Extras](#extras-optional)).
 </Aside>
 
-### Build cdk-mintd from source
+### Download and install cdk-mintd
 
-Build as the `cdk-mintd` user so the toolchain and source live in its home.
+CDK publishes a static binary for each release, built with the Postgres, Redis, and
+Prometheus features this guide uses, so there is nothing to compile.
 
-* Change to the `cdk-mintd` user
+* With user `admin`, download the release binary for your architecture and its checksum
+  file
 
 ```bash
-sudo su - cdk-mintd
+cd /tmp
+VERSION=0.17.1
+ARCH=$(uname -m)
+wget https://github.com/cashubtc/cdk/releases/download/v$VERSION/cdk-mintd-$VERSION-$ARCH
+wget https://github.com/cashubtc/cdk/releases/download/v$VERSION/SHA256SUMS
 ```
 
-* Install the Rust toolchain (the workspace needs Rust 1.85 or newer, so the stable
-  channel is fine) and load it into the current shell
+* Verify the download against the checksum published with the release
 
 ```bash
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-source "$HOME/.cargo/env"
-```
-
-* Import the GPG key the CDK maintainer signs releases with
-
-```bash
-curl https://github.com/thesimplekid.gpg | gpg --import
+sha256sum --check --ignore-missing SHA256SUMS
 ```
 
 **Example** of expected output:
 
 ```
-gpg: key 961DAACEB7C38911: public key "thesimplekid <tsk@thesimplekid.com>" imported
-gpg: Total number processed: 1
-gpg:               imported: 1
+cdk-mintd-0.17.1-x86_64: OK
 ```
 
-* Clone the pinned release and enter the source directory
+* Install the binary to a system path, confirm the version, and remove the downloads
 
 ```bash
-git clone --branch v0.17.1 https://github.com/cashubtc/cdk.git && cd cdk
-```
-
-* Verify that the checked-out release commit carries a good signature from that key
-
-```bash
-git verify-commit HEAD
-```
-
-**Example** of expected output (the date and key id will differ):
-
-```
-gpg: Good signature from "thesimplekid <tsk@thesimplekid.com>" [unknown]
-gpg: WARNING: This key is not certified with a trusted signature!
-gpg:          There is no indication that the signature belongs to the owner.
-```
-
-<Aside type="note" title="What this proves">
-  A good signature confirms the release commit was signed by the maintainer's key as
-  published on GitHub (`tsk@thesimplekid.com`, key id `961DAACEB7C38911` or
-  `63AD6D09BBFE7783`). The "not certified" warning is expected: it only means you have
-  not personally marked the key as trusted. The `v0.17.1` tag itself is lightweight
-  (not signed), so it is the commit signature you verify here, not the tag.
-</Aside>
-
-* Build the daemon. The `postgres`, `redis`, and `prometheus` features are off by
-  default, so enable all three; the default LND backend stays on
-
-```bash
-cargo build --release --bin cdk-mintd --features "postgres redis prometheus"
-```
-
-The build takes a while on first run.
-
-* Come back to the `admin` user
-
-```bash
-exit
-```
-
-* With user `admin`, install the compiled binary to a system path
-
-```bash
-sudo install -m 0755 -o root -g root /home/cdk-mintd/cdk/target/release/cdk-mintd /usr/local/bin/cdk-mintd
-```
-
-* Check the correct installation by requesting the version
-
-```bash
+sudo install -m 0755 cdk-mintd-$VERSION-$ARCH /usr/local/bin/cdk-mintd
 cdk-mintd --version
+rm cdk-mintd-$VERSION-$ARCH SHA256SUMS
 ```
 
 **Example** of expected output:
@@ -363,7 +298,7 @@ contact_email = "you@yourdomain.com"
 engine = "postgres"
 
 [database.postgres]
-url = "postgresql://admin:admin@127.0.0.1:5432/cdk_mintd"
+url = "postgresql://cdk_mintd:your-mint-db-password@127.0.0.1:5432/cdk_mintd"
 tls_mode = "disable"
 
 # Settle through your LND node
@@ -542,7 +477,7 @@ sudo -u postgres pg_dump cdk_mintd | gzip > cdk_mintd-$(date +%F).sql.gz
 <Aside type="tip" title="Restoring a mint">
   To bring a mint back on a new machine: install `cdk-mintd` as above with the **same
   seed** in `config.toml`, recreate the database
-  (`sudo -u postgres createdb -O admin cdk_mintd`), and load your latest dump into it
+  (`sudo -u postgres createdb -O cdk_mintd cdk_mintd`), and load your latest dump into it
 
   ```bash
   gunzip -c cdk_mintd-DATE.sql.gz | sudo -u postgres psql cdk_mintd
@@ -771,37 +706,23 @@ remove `/data/cdk-mintd/tls`, and start it again.
 sudo systemctl stop cdk-mintd
 ```
 
-* Change to the `cdk-mintd` user and go to the `cdk` folder
+* Download the new release binary and its checksum for your architecture (replace the
+  version with the release you want)
 
 ```bash
-sudo su - cdk-mintd
-cd cdk
+cd /tmp
+VERSION=0.17.1
+ARCH=$(uname -m)
+wget https://github.com/cashubtc/cdk/releases/download/v$VERSION/cdk-mintd-$VERSION-$ARCH
+wget https://github.com/cashubtc/cdk/releases/download/v$VERSION/SHA256SUMS
+sha256sum --check --ignore-missing SHA256SUMS
 ```
 
-* Fetch the tags and check out the release you want (replace `v0.17.1`)
+* Replace the binary, clean up, and start the service again
 
 ```bash
-git fetch --tags
-git checkout v0.17.1
-```
-
-* Load the toolchain and rebuild with the same features
-
-```bash
-source "$HOME/.cargo/env"
-cargo build --release --bin cdk-mintd --features "postgres redis prometheus"
-```
-
-* Come back to the `admin` user
-
-```bash
-exit
-```
-
-* With user `admin`, reinstall the binary and start the service again
-
-```bash
-sudo install -m 0755 -o root -g root /home/cdk-mintd/cdk/target/release/cdk-mintd /usr/local/bin/cdk-mintd
+sudo install -m 0755 cdk-mintd-$VERSION-$ARCH /usr/local/bin/cdk-mintd
+rm cdk-mintd-$VERSION-$ARCH SHA256SUMS
 sudo systemctl start cdk-mintd
 ```
 
@@ -874,15 +795,15 @@ outbound connection.
 
 ## After the mint
 
-Your stack is complete: Bitcoin, Lightning, and a mint, all run by you. The mint
-writes to the `cdk_mintd` Postgres database and exposes metrics on `127.0.0.1:9000`,
-which is what Orchard connects to next.
+The mint is running, and it writes to the `cdk_mintd` Postgres database, serves its
+management gRPC on `127.0.0.1:8086`, and exposes metrics on `127.0.0.1:9000`. The last
+step installs Orchard and points it at all of them.
 
 <CardGrid>
   <LinkCard
-    title="Install Orchard"
-    href="/install/"
-    description="Connect Orchard to your mint and manage it from one dashboard."
+    title="Next: Install Orchard"
+    href="/new-mint/orchard/"
+    description="Install Orchard with its own user and point it at the stack you built."
   />
   <LinkCard
     title="CDK on GitHub"

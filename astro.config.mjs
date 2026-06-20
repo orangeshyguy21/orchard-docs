@@ -44,7 +44,6 @@ export default defineConfig({
     '/existing-mint/bitcoin-core': '/install/bitcoin',
     '/existing-mint/lightning': '/install/lightning',
     '/existing-mint/mint': '/install/mint',
-    '/new-mint/orchard': '/install/orchard',
   },
   integrations: [
     starlight({
@@ -69,7 +68,7 @@ export default defineConfig({
             {
               label: 'New Mint',
               description:
-                'Stand up a full Cashu mint stack from scratch: system, Bitcoin, Lightning, and the mint.',
+                'Stand up a full Cashu mint stack from scratch: system, Bitcoin, Lightning, the mint, and Orchard to manage it.',
               paths: ['new-mint', 'new-mint/**'],
             },
             {
@@ -130,6 +129,7 @@ export default defineConfig({
             { label: 'Bitcoin Node', slug: 'new-mint/bitcoin-node' },
             { label: 'Lightning Node', slug: 'new-mint/lightning-node' },
             { label: 'Cashu Mint', slug: 'new-mint/mint' },
+            { label: 'Orchard', slug: 'new-mint/orchard' },
           ],
         },
         {
