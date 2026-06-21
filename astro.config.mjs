@@ -140,6 +140,10 @@ export default defineConfig({
         { label: 'Overview', slug: 'index' },
         {
           label: 'New Mint',
+          // Collapsed by default — the longest section, and most readers land in
+          // Install or Your Orchard. Starlight still auto-expands it when the
+          // reader is on one of its pages.
+          collapsed: true,
           items: [
             { label: 'New Mint', slug: 'new-mint' },
             { label: 'System', slug: 'new-mint/system' },
