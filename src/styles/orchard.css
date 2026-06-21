@@ -120,6 +120,23 @@
   --sl-color-hairline-shade: #e6d9b4;
 }
 
+/* Page-title sparkle — the marketing site's four-point star (orchard-space
+ * Sparkles.astro, same concave-diamond path) set at the start of every page's
+ * H1. Drawn as a mask filled with currentColor so it tracks the title colour in
+ * both themes. The 80:100 viewBox gives the star its slightly-taller-than-wide
+ * proportions; sized in em so it scales with the heading. */
+#_top::before {
+  content: '';
+  display: inline-block;
+  width: 0.64em;
+  height: 0.8em;
+  margin-inline-end: 0.34em;
+  vertical-align: -0.06em;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 100'%3E%3Cpath d='M40 0 Q45 47 80 50 Q45 53 40 100 Q35 53 0 50 Q35 47 40 0 Z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 100'%3E%3Cpath d='M40 0 Q45 47 80 50 Q45 53 40 100 Q35 53 0 50 Q35 47 40 0 Z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
 /* Logo mark sized to match the marketing header (2rem-wide mark ≈ 1.625rem tall
  * at the orchard glyph's aspect ratio); Starlight defaults it taller. The
  * "ORCHARD DOCS" wordmark beside it is rendered by the SiteTitle override. */
