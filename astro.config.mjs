@@ -36,29 +36,6 @@ export default defineConfig({
   markdown: {
     rehypePlugins: [rehypeExternalLinksNewTab],
   },
-  // Old URLs that no longer have their own page. The Install section is now
-  // Overview / Installation / Configuration; the per-service connection steps
-  // are env-var settings that live on the Configuration page, and the legacy
-  // "Existing Mint" URLs fold in here too. Redirect them all so inbound links
-  // and search results don't 404 (Astro emits static redirect pages in `dist/`).
-  redirects: {
-    '/existing-mint': '/install',
-    '/existing-mint/bitcoin-core': '/install/configuration',
-    '/existing-mint/lightning': '/install/configuration',
-    '/existing-mint/mint': '/install/configuration',
-    '/install/orchard': '/install/installation',
-    '/install/bitcoin': '/install/configuration',
-    '/install/lightning': '/install/configuration',
-    '/install/taproot-assets': '/install/configuration',
-    '/install/mint': '/install/configuration',
-    '/install/ai': '/orchard/ai',
-    // "Your Orchard" was reorganized to mirror the app's own navigation. The
-    // standalone Monitoring and Configuration pages were retired: health/activity
-    // now lives on the Dashboard, and mint metadata/config (plus database backup)
-    // folded into the Mint page. Redirect the deployed URLs so they don't 404.
-    '/orchard/monitoring': '/orchard/dashboard',
-    '/orchard/configuration': '/orchard/mint',
-  },
   integrations: [
     starlight({
       title: 'Orchard Docs',
@@ -162,7 +139,6 @@ export default defineConfig({
         {
           label: 'Install',
           items: [
-            { label: 'Overview', slug: 'install' },
             { label: 'Installation', slug: 'install/installation' },
             { label: 'Configuration', slug: 'install/configuration' },
           ],
@@ -188,7 +164,7 @@ export default defineConfig({
           // "product docs, not developer docs" rule (see AGENTS.md).
           label: 'Development',
           items: [
-            { label: 'Overview', slug: 'development' },
+            { label: 'Development', slug: 'development' },
             { label: 'Running locally', slug: 'development/running-locally' },
             { label: 'Testing & CI', slug: 'development/testing' },
             { label: 'End-to-end testing', slug: 'development/e2e' },
