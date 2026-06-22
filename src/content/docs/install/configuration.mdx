@@ -5,7 +5,7 @@ description: Every Orchard configuration option, set in your .env file — the c
 
 import { Aside, CardGrid, LinkCard, Tabs, TabItem } from '@astrojs/starlight/components';
 
-These settings are configured with environment variables, read from a `.env` file in the
+Configure Orchard by setting environment variables in a `.env` file in the
 project root. Copy the template and edit it:
 
 ```bash
@@ -15,12 +15,12 @@ nano .env
 
 ## Orchard
 
-The Orchard app itself has some configuration options, separate from the services it connects to below.
+First, configure the core of the application. Some configs are required, others are optional.
 
 ### Required
 
 `SETUP_KEY` is the one you must set; the rest are shown with their defaults.
-Copy the block into `.env` and change what you need.
+Copy the block into `.env` and make applicable changes.
 
 ```ini
 SETUP_KEY=<YOUR_SETUP_KEY>  # required — guards first-run setup and admin access
@@ -81,13 +81,15 @@ CRYPTO_KEY=                 # encryption key for app settings
 
 ## Services
 
-Each service below is optional and independent of the rest. Connect whichever ones you
-want. Each unlocks its matching features in the application. That might be a full
+Each service below is optional and independent of the rest. Connect whichever fits your setup.
+Each unlocks its matching features in the application. That might be a full
 stack, just your mint, or only your Lightning node.
+
+To omit a service, leave the section blank or comment it out.
 
 ### Bitcoin
 
-Point Orchard at the Bitcoin Core node your stack settles against, over RPC. The host
+Point Orchard at your Bitcoin node over RPC. The host
 and port below are the standard Bitcoin Core values; set the credentials to match your
 `bitcoin.conf`.
 
@@ -159,7 +161,7 @@ CLN with mutual TLS), so each tab shows only the settings it needs.
 
 ### Taproot Assets
 
-Manage Lightning-native assets alongside your sats mint. The host and port below are
+Manage Lightning-native assets with your taproot assets daemon. The host and port below are
 tapd's standard values; point the macaroon and certificate at your tapd instance.
 
 ```ini
@@ -180,9 +182,14 @@ TAPROOT_ASSETS_CERT=<tls.cert>            # path to tapd's TLS cert
 
 ### Cashu Mint
 
-This is the layer Orchard manages directly. Orchard reads the mint's database to
-surface keys and balances, and talks to its RPC to manage it. Set the implementation in
-**Connection**; the **Database** and **Management RPC** each configure on their own.
+Connect your Cashu Mint to Orchard. Orchard reaches the mint three ways:
+
+- **Public API** — to read mint info and the features it supports.
+- **Database** — to read rich data the RPC doesn't surface (yet).
+- **Management RPC** — for management actions.
+
+Set the implementation in **Connection**; the **Database** and **Management RPC**
+each is configured a little differently depending on the implementation and how it's configured.
 
 **Connection**
 
