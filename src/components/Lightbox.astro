@@ -3,8 +3,8 @@ import Default from '@astrojs/starlight/components/Footer.astro';
 
 // Wired as Starlight's `Footer` override (astro.config.mjs) so this renders once
 // on every page. Two jobs:
-//  1. A decorative "colophon" page marker — a tarot-style oval reading
-//     "Section · Page" with sunburst shine rays, plus the last-updated stamp.
+//  1. A decorative "colophon" page marker — a name plate reading "Section · Page"
+//     in a pill, framed by a dashed box, plus the last-updated stamp.
 //  2. A single shared lightbox <dialog> that any `.screenshot` figure expands
 //     into (the script below wires up the clickable screenshots).
 // The default Footer is re-rendered untouched (pagination etc.); its own
@@ -41,33 +41,20 @@ const stamp = lastUpdated?.toLocaleDateString(lang, { dateStyle: 'medium', timeZ
 <div class="colophon">
   <hr class="colophon__rule" />
   <p class="colophon__marker">
-    {/* Sunburst "shine" rays flanking the oval — five thin lines radiating from
-        the oval's centre (off-frame right), so their inner ends share a
-        concentric arc that hugs the oval's curve; cascading lengths keep the
-        middle longest, tapering top and bottom. Mirrored on the right. */}
-    <svg class="colophon__rays" width="48" height="44" viewBox="0 0 48 44" fill="none" aria-hidden="true">
-      <path d="M43.3 8.9 29.2 1.3" />
-      <path d="M40.8 15.2 13.7 8.5" />
-      <path d="M40 22 4 22" />
-      <path d="M40.8 28.8 13.7 35.5" />
-      <path d="M43.3 35.1 29.2 42.7" />
-    </svg>
-    <span class="colophon__oval">
-      {section && (
-        <>
-          <span class="colophon__section">{section}</span>
-          <span class="colophon__sep" aria-hidden="true"></span>
-        </>
-      )}
-      <span class="colophon__page">{pageName}</span>
+    {/* Name plate: a dashed box framing a pill. The box sits behind the pill and
+        is decorative only (aria-hidden). */}
+    <span class="colophon__badge">
+      <span class="colophon__box" aria-hidden="true"></span>
+      <span class="colophon__oval">
+        {section && (
+          <>
+            <span class="colophon__section">{section}</span>
+            <span class="colophon__sep" aria-hidden="true"></span>
+          </>
+        )}
+        <span class="colophon__page">{pageName}</span>
+      </span>
     </span>
-    <svg class="colophon__rays colophon__rays--flip" width="48" height="44" viewBox="0 0 48 44" fill="none" aria-hidden="true">
-      <path d="M43.3 8.9 29.2 1.3" />
-      <path d="M40.8 15.2 13.7 8.5" />
-      <path d="M40 22 4 22" />
-      <path d="M40.8 28.8 13.7 35.5" />
-      <path d="M43.3 35.1 29.2 42.7" />
-    </svg>
   </p>
   {stamp && (
     <p class="colophon__stamp">

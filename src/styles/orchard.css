@@ -124,14 +124,19 @@
  * Sparkles.astro, same concave-diamond path) set at the start of every page's
  * H1. Drawn as a mask filled with currentColor so it tracks the title colour in
  * both themes. The 80:100 viewBox gives the star its slightly-taller-than-wide
- * proportions; sized in em so it scales with the heading. */
+ * proportions; sized in em so it scales with the heading. The H1 is a two-column
+ * grid — star, then text — aligned centre, so the star stays vertically centred
+ * against the whole title even when it wraps to multiple lines. */
+#_top {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 0.34em;
+}
 #_top::before {
   content: '';
-  display: inline-block;
   width: 0.64em;
   height: 0.8em;
-  margin-inline-end: 0.34em;
-  vertical-align: -0.06em;
   background-color: currentColor;
   -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 100'%3E%3Cpath d='M40 0 Q45 47 80 50 Q45 53 40 100 Q35 53 0 50 Q35 47 40 0 Z'/%3E%3C/svg%3E") center / contain no-repeat;
   mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 100'%3E%3Cpath d='M40 0 Q45 47 80 50 Q45 53 40 100 Q35 53 0 50 Q35 47 40 0 Z'/%3E%3C/svg%3E") center / contain no-repeat;
@@ -299,9 +304,10 @@
 /* ---------------------------------------------------------------------------
  * Footer colophon — a tarot-style page marker closing every page (rendered by
  * the Footer override, src/components/Lightbox.astro). A tapered hairline rule,
- * then the section + page name set in an oval flanked by sunburst "shine" rays
- * — echoing an occult book's page mark (suit · card) — with the last-updated
- * stamp beneath. Kept deliberately recessive so it reads as a quiet page anchor
+ * then the section + page name set in a pill, framed by a dashed box — a "name
+ * plate" echoing the brand art — with the last-updated stamp beside or beneath
+ * it (see the grid layout below). Kept deliberately recessive so it reads
+ * as a quiet page anchor
  * and never competes with content: the decorative ink (--colophon-ink) is a
  * muted warm gray carrying only a faint ember tint, and the text sits on the
  * muted gray tier — held there because gray-3 is the AA contrast floor on the
@@ -317,7 +323,15 @@ footer .meta {
 }
 
 .colophon {
-  --colophon-ink: color-mix(in srgb, var(--sl-color-accent) 18%, var(--sl-color-gray-4));
+  /* Decorative ink shared by the whole name plate (box, pill, dots, separator):
+     a muted warm gray with a faint ember tint, then faded ~22% toward the page
+     background so the frame stays delicate. Dimming it here dims every part in
+     step; the label text rides --sl-color-gray-3 instead, so it isn't touched. */
+  --colophon-ink: color-mix(
+    in srgb,
+    color-mix(in srgb, var(--sl-color-accent) 18%, var(--sl-color-gray-4)) 78%,
+    var(--sl-color-black)
+  );
   margin-top: 3rem;
   text-align: center;
 }
@@ -368,25 +382,34 @@ footer .meta {
   gap: 0.2rem;
   margin: 0;
 }
-.colophon__rays {
-  flex: none;
-  width: 40px;
-  height: auto;
-  stroke: var(--colophon-ink);
-  stroke-width: 1.6;
-  stroke-linecap: round;
+/* Name plate: the pill (below) framed by a dashed box. The badge gets a little
+ * vertical head-room so the box can rise above and below the pill; the box is
+ * inset horizontally so the pill's rounded caps overhang its sides — the two
+ * shapes interlock the way the mock draws them. */
+.colophon__badge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding-block: 0.5rem;
 }
-.colophon__rays--flip {
-  transform: scaleX(-1);
+.colophon__box {
+  position: absolute;
+  inset-block: 0;
+  /* Inset the verticals enough that the pill's rounded caps clearly overhang the
+     dashed frame on each side (a touch more than the 0.5rem top/bottom gap). */
+  inset-inline: 0.8rem;
+  border: 1px dashed color-mix(in srgb, var(--colophon-ink) 55%, transparent);
+  pointer-events: none;
 }
-/* The oval (a stadium border) holding "Section ◦ Page" in the nav's own casing —
- * the colophon's single focal flourish. */
+/* The pill (a stadium border) holding "Section ◦ Page" in the nav's own casing —
+ * the colophon's focal flourish. Positioned so it stacks above the dashed box. */
 .colophon__oval {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 0.6em;
-  padding: 0.4rem 1.1rem;
-  border: 1px solid color-mix(in srgb, var(--colophon-ink) 72%, transparent);
+  padding: 0.5rem 1.45rem;
+  border: 1px solid color-mix(in srgb, var(--colophon-ink) 62%, transparent);
   border-radius: 999px;
   font-size: var(--sl-text-xs);
   font-weight: 600;
@@ -394,13 +417,17 @@ footer .meta {
   color: var(--sl-color-gray-3);
   white-space: nowrap;
 }
-/* The separator between section and page — a little ring, per the brief. */
+/* The separator between section and page — the marketing four-point star, filled
+ * (the back/next plates use the same star outlined). Same muted ink the ring
+ * carried, just the shape swapped: a mask filled with --colophon-ink, so it still
+ * tracks the theme. Same star path as the page-title sparkle. */
 .colophon__sep {
   flex: none;
-  width: 6px;
-  height: 6px;
-  border: 1px solid var(--colophon-ink);
-  border-radius: 50%;
+  width: 9px;
+  height: 11px;
+  background-color: var(--colophon-ink);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 100'%3E%3Cpath d='M40 0 Q45 47 80 50 Q45 53 40 100 Q35 53 0 50 Q35 47 40 0 Z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 100'%3E%3Cpath d='M40 0 Q45 47 80 50 Q45 53 40 100 Q35 53 0 50 Q35 47 40 0 Z'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 .colophon__stamp {
   margin: 1rem 0 0;
@@ -408,16 +435,47 @@ footer .meta {
   color: var(--sl-color-gray-3);
 }
 
-/* Narrow viewports: tighten the marker so a longer "section · page" still fits
- * on one line beside its rays. */
+/* Wide content column: lay the colophon as a grid so the name plate sits
+ * flush-left and the stamp flush-right on one row, with the divider spanning
+ * both. Keyed to the panel's own inline size (the same container the rule bleed
+ * measures against) so it flips on available room, not raw viewport; narrower
+ * columns keep the stacked, centred default above. */
+@container (min-width: 36rem) {
+  .colophon {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    column-gap: 1rem;
+  }
+  .colophon__rule {
+    grid-column: 1 / -1;
+  }
+  .colophon__marker {
+    justify-self: start;
+  }
+  .colophon__stamp {
+    justify-self: end;
+    margin: 0;
+  }
+}
+
+/* Narrow viewports: tighten the pill so a longer "section · page" still fits on
+ * one line. */
 @media (max-width: 30rem) {
   .colophon__oval {
     padding: 0.35rem 0.85rem;
     letter-spacing: 0.12em;
   }
-  .colophon__rays {
-    width: 30px;
-  }
+}
+
+/* Section index cards (CardGrid + LinkCard on the landing pages) — Starlight lays
+ * these out two-across at ≥50rem, which makes them read like the Previous / Next
+ * pagination plates below. Force a single full-width column so a section's
+ * sub-pages stack as distinct, full-bleed buttons instead. Stagger grids keep the
+ * two-column offset they depend on. Un-layered so it wins over Starlight's layered
+ * .card-grid rule. */
+.sl-markdown-content .card-grid:not(.stagger) {
+  grid-template-columns: 100%;
 }
 
 /* Previous / Next pagination cards — a riveted "plate" frame echoing the brand
