@@ -5,9 +5,8 @@ description: Keep an eye on the Bitcoin node behind your mint from Orchard — a
 
 import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-Every mint sits on top of a Bitcoin node, and Orchard surfaces that node so you don't have
-to drop to the command line to check on it. The Bitcoin view has two tabs — a **Dashboard**
-overview and the **Oracle**, Orchard's sovereign price feed.
+Connecting your Bitcoin node to Orchard gives you a dedicated view of the node.
+It also unlocks the option for sovereign USD price converstions throughout the application.
 
 <figure class="screenshot">
 
@@ -18,31 +17,19 @@ overview and the **Oracle**, Orchard's sovereign price feed.
 </figure>
 
 <Aside type="note" title="Connecting your node">
-  Which Bitcoin node Orchard talks to, and how, is set at install time with environment
-  variables — see [Installation & Configuration](/install/configuration/). This page is
-  about watching it once it's connected.
+  Which Bitcoin node Orchard talks to, and how, is set with environment
+  variables. See [Installation & Configuration](/install/configuration/#bitcoin).
 </Aside>
 
-## Dashboard
+## Bitcoin Dashboard
 
-A full node overview — info, hot wallet, and a live look at the mempool — is coming soon to
-this tab. In the meantime, the [Home view](/orchard/home/) already summarises the
-node: online status, peers, block height, chain weight, the on-chain balance backing your
-mint, and current fee rates.
+Today, the [home page](/orchard/home/#bitcoin) contains information about your bitcoin node.
+A dedicated dashboard is coming soon.
 
 ## Oracle
 
-The Oracle tab is home to the **Sovereign USD Price Oracle** — a US-dollar price for bitcoin
-derived from your own node's on-chain data, using the open-source
-[UTXOracle](https://utxo.live/oracle/) method. No exchange APIs, no third-party feeds,
-nothing that leaks what you're holding.
+The Oracle is an optional feature that allows you to add in-app USD
+conversions alonside Bitcoin values using only your own node's on-chain data.
 
-It shows the **latest price**, a chart of price history across a date range you choose, and
-a **Backfill Prices** control to fill in history for any span back to 2020 — the progress
-panel tracks how many days succeeded or failed as it works.
-
-<Aside type="tip" title="Enable it first">
-  The Oracle tab only appears once you've switched on the oracle under
-  [Settings → Application → Bitcoin](/orchard/settings/#bitcoin). Off by default, it then
-  derives the previous day's price once daily at 00:00 UTC.
-</Aside>
+You can backfill price history all the way back to 2020 in order to get acurate conversions 
+on historical transactions. To learn more about the Oracle and how to enable it, see [Settings → Application → Bitcoin](/orchard/settings/#bitcoin).
