@@ -71,7 +71,7 @@ export default defineConfig({
             {
               label: 'Your Orchard',
               description:
-                'Operate Orchard day to day: set up the instance, settings, crew, the change log, the dashboard, the Bitcoin/Lightning/Mint service views (including mint database backup and restore), and the built-in AI assistant.',
+                'Operate Orchard day to day: set up the instance, settings, crew, the change log, the Home screen, the Bitcoin/Lightning/Mint service views (including mint database backup and restore), and the built-in AI assistant.',
               paths: ['orchard', 'orchard/**'],
             },
             {
@@ -151,7 +151,7 @@ export default defineConfig({
             { label: 'Settings', slug: 'orchard/settings' },
             { label: 'Crew', slug: 'orchard/crew' },
             { label: 'Change Log', slug: 'orchard/changelog' },
-            { label: 'Dashboard', slug: 'orchard/dashboard' },
+            { label: 'Home', slug: 'orchard/home' },
             { label: 'Bitcoin', slug: 'orchard/bitcoin' },
             { label: 'Lightning', slug: 'orchard/lightning' },
             { label: 'Mint', slug: 'orchard/mint' },
