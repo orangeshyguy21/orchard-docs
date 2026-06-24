@@ -5,30 +5,31 @@ description: Operate the Cashu mint itself from Orchard — its dashboard, publi
 
 import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-The Mint view is where you operate the Cashu mint at the center of your stack: the public
-face wallets see, the keys it issues against, how it behaves, and the database that holds
-its state. It's organised into five tabs — **Dashboard**, **Info**, **Config**, **Keysets**,
-and **Database**.
+Connecting your Cashu Mint to Orchard gives you a complete mirco-application for mint
+operation. Here you can observe, configure, and manage your mint.
 
 <figure class="screenshot">
 
 ![Orchard's Mint view on the Info tab, beside Dashboard, Config, Keysets, and Database tabs, for "Demo Dayz Mint". Editable fields show the mint's name, description, icon URL, and a long description, alongside connection URLs, contact methods for X and Nostr, and a Message of the Day.](../../../assets/your-orchard-mint.png)
 
-<figcaption>The Mint view — here on the Info tab, the public face wallets see.</figcaption>
+<figcaption>Mint information and configuration.</figcaption>
 
 </figure>
 
 ## Dashboard
 
-The mint's overview, read-only: cards for its info, supported nuts and limits, keysets, and
-an **Activity** panel tracking operations and volume — mints, melts, and swaps over a day,
-week, month, or year — plus a **Balance Sheet**. Below them, deeper "Nutalytics" charts plot
-balances, mints, melts, swaps, fee revenue, and ecash counts across a date range you choose.
+Get an executive overview of your mint's health and status:
+
+- **Info** — the mint's public info
+- **Config** — supported features
+- **Keysets** — keyset breakdown and database growth.
+- **Activity** — recent activity and volume.
+- **Balance Sheet** — a real-time snapshot of the mint's holdings.
+- **Nutalytics** — rich timeseries charts of the mint's activity.
 
 ## Info
 
-The public metadata wallets read when they connect — edited here rather than in the mint's
-own config:
+Update public information that wallets read about your mint.
 
 - **Name**, **description**, and a longer **description**.
 - **Icon** — the image a wallet displays for your mint.
@@ -40,20 +41,18 @@ Keep it accurate: this is what a wallet shows someone before they trust your min
 
 ## Config
 
-How the mint behaves:
+View and manage the features your mint does and does not support, and how they are configured.
+Some features are managed in the mint's own config file, and others can be managed in Orchard.
 
-- **Minting (NUT-04)** and **Melting (NUT-05)** — switch each on or off, set the per-unit
-  minimum and maximum amounts for BOLT11 and BOLT12, and the quote expiry (TTL).
-- **Supported nuts** — a reference list of the rest of the protocol features your mint
-  supports (token state checks, fee return, signature restore, P2PK, HTLCs, and more); some
-  are toggled here, others are set in the mint's own config file.
+<Aside type="note" title="Why the split">
+The mint's RPC offers only limited real-time control over mint features for now, so anything
+it doesn't expose has to be set in the config file directly.
+</Aside>
 
 ## Keysets
 
-The keys your mint issues ecash against. The table lists every keyset — its ID, unit,
-active state, fee rate (ppk), balance, fee revenue, and proof and promise counts — with a
-chart of activity over time. Run a **keyset rotation** to start issuing against fresh keys,
-choosing the unit, input fee, and amounts.
+Manage your mints keysets and monitor their activity over time as you rotate them in and out.
+Keysets can be rotated to change fees, and to manage the growth of the mint's database.
 
 ## Database
 
