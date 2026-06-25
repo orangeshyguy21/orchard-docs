@@ -51,31 +51,45 @@ it doesn't expose has to be set in the config file directly.
 
 ## Keysets
 
-Manage your mints keysets and monitor their activity over time as you rotate them in and out.
-Keysets can be rotated to change fees, and to manage the growth of the mint's database.
+Manage your mint's keysets and monitor balances after rotations.
+Keysets can be rotated to change fees, versions, and denominations.
 
 ## Database
 
-Back up and restore the mint database straight from the dashboard, so keeping a current copy
-doesn't mean dropping to the command line:
+No more is the database a black box. You can browse mint, melt, and swap records with a rich set of filters to find exactly what you need.
+
+Back up and restore the mint database straight from the dashboard.
 
 - **Create Backup** downloads a copy of the database.
-- **Restore Backup** loads one back in — shut the mint down first, match the backup to the
-  mint's version, restore, then start it again.
+- **Restore Backup** restores the database from a saved backup.
 
-The same screen also browses the underlying mint, melt, and swap records, filterable by
-date, unit, and state.
+<Aside type="note" title="Backing up the database">
+The mint database should always be backed up before updating the mint.
+This ensures you can restore the mint in case of a problem.
+</Aside>
+
+<Aside type="caution" title="Restoring a backup">
+The mint must be shut down before you restore. Follow the on-screen steps closely to ensure
+a successful restore.
+</Aside>
+
 
 ### The recovery model
 
-A mint is restored from two things together:
+A lost or corrupted mint is restored from two things together:
 
-- **The seed phrase**, which derives the mint's signing keys. It never changes, lives in the
-  mint daemon's config rather than its database, and Orchard never holds it — so this half
-  stays your responsibility (see the mint's [seed step](/new-mint/mint/#generate-the-mint-seed)).
-- **The database**, which changes every time the mint issues or redeems ecash — the half
-  Orchard backs up for you.
+- **The secret seed**, which derives the mint's signing keys. This static private key lives in the
+  mint daemon's config rather than its database. This half stays your responsibility.
+- **The database**, which changes every time the mint issues or redeems ecash.
 
-With both, a mint lost to a dead disk comes back fully operational, with the same keysets and
-the same outstanding ecash. With only one, it doesn't. Take backups on a schedule and store
-them off the machine, separate from your seed backup.
+With both, a mint lost to a dead disk or similar catastrophe comes back fully operational, with the same keysets and
+the same outstanding ecash. With only one, it cannot. Have a backup and storage strategy for both.
+
+## AI
+
+Connecting a mint gives the [AI agent](/orchard/settings/#ai) read-only tools
+for knowing what's happening on your mint:
+
+- **Mint Info** — mint identity, version, and operator contact info.
+- **Mint Analytics** — balances, mints, melts, and fees over time.
+- **Mint Metrics** — mint and melt volumes, swap fees, and issuance over time.
