@@ -25,7 +25,7 @@ Postgres you set up for Lightning, and expose it on the internet with a Cloudfla
 
 - **`cdk-mintd` installed from its official prebuilt binary**, checksum-verified and placed as a system binary.
 - **An isolated `cdk-mintd` service user** that reads your LND node's TLS
-  certificate and macaroon, with no other privileges.
+  certificate and macaroon.
 - **Postgres and Redis** wired in: Postgres for the mint database
   (the same instance your LND node uses) and Redis for the response cache.
 - **A hardened systemd service** so the mint starts on boot and restarts on
@@ -40,8 +40,10 @@ Postgres you set up for Lightning, and expose it on the internet with a Cloudfla
   macaroons on this machine.
 - **PostgreSQL installed and running.** The Lightning step sets this up if you
   followed its tip to choose the Postgres backend. You reuse that instance here.
-- **A domain on Cloudflare.** The mint is exposed through a Cloudflare Tunnel, which
-  needs a domain whose nameservers point at Cloudflare (the free plan is enough).
+- **A domain.** Registered with any registrar. The mint is exposed through a Cloudflare
+  Tunnel, which routes a hostname on your domain to it.
+- **A free Cloudflare account.** Add your domain to it and point the domain's
+  nameservers at Cloudflare, so the tunnel can manage the hostname's DNS.
 
 <Aside type="caution" title="Postgres comes from the Lightning step">
   This guide assumes you took MiniBolt's **PostgreSQL** path for LND, not the default
@@ -49,6 +51,13 @@ Postgres you set up for Lightning, and expose it on the internet with a Cloudfla
   role. If you ran LND on bbolt, install Postgres now with MiniBolt's
   [PostgreSQL guide](https://minibolt.minibolt.info/bonus-guides/system/postgresql)
   before continuing.
+</Aside>
+
+<Aside type="note" title="Other ways to serve your mint">
+  A public hostname is all the mint needs; how you provide it is up to you. A static IP
+  with port forwarding, or another tunnel service, work just as well. This guide uses a
+  Cloudflare Tunnel because it's a solid free, no-KYC option that needs no static IP or
+  open ports.
 </Aside>
 
 ## Preparations
@@ -122,7 +131,7 @@ sudo usermod -aG lnd cdk-mintd
 
 `cdk-mintd` authenticates to LND with a TLS certificate and an `admin` macaroon. As a
 member of the `lnd` group, the `cdk-mintd` user has read-only access to those files;
-following MiniBolt's convention, symlink the LND data directory into its home so the
+symlink the LND data directory into its home so the
 daemon finds them under `~/.lnd`.
 
 * Change to the `cdk-mintd` user
@@ -211,7 +220,7 @@ rm cdk-mintd-$VERSION-$ARCH SHA256SUMS
 
 ### Create the data directory
 
-The mint keeps its configuration and seed in a work directory. Following MiniBolt's
+The mint keeps its configuration and seed in a work directory. Following
 layout, put it under `/data`.
 
 * With user `admin`, create the work directory and give it to the `cdk-mintd` user
@@ -223,10 +232,9 @@ sudo chown -R cdk-mintd:cdk-mintd /data/cdk-mintd
 
 ### Generate the mint seed
 
-`cdk-mintd` derives the mint's signing keys from a standard BIP-39 seed phrase, used
-with no passphrase. The mint signs with it on every operation, so the seed lives here
-on the server: there is nothing to gain from generating it on another machine. CDK does
-not generate one for you, so make a fresh 24 word phrase with the BIP-39 reference
+`cdk-mintd` derives the mint's signing keys from a standard BIP-39 seed phrase.
+The mint signs with it on every operation, so the seed lives here on the server.
+CDK does not generate one for you, so make a fresh 24 word phrase with the BIP-39 reference
 implementation, which Ubuntu packages.
 
 * With user `admin`, install the generator and print a fresh phrase
@@ -247,8 +255,8 @@ army van defense carry jealous true garbage claim echo media make ...
   lives: if the disk dies, that offline copy is half of how you restore the mint.
 
 <Aside type="danger" title="The seed is half of your backup">
-  This phrase controls every keyset the mint issues, and it never changes. Keep a
-  written, offline copy in more than one place. The seed alone cannot rebuild a mint:
+  This phrase controls every keyset the mint issues, and it never changes. Have a
+  backup plan for this seed. The seed alone cannot rebuild a mint:
   recovery needs the seed **together with** a recent copy of the mint's database (see
   [Back up the mint](#back-up-the-mint)). Lose the seed and the mint can no longer
   sign; leak it and someone else can.
